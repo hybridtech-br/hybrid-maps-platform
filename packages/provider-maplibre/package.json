@@ -21,6 +21,7 @@
     "maplibre-gl": "^5.1.0"
   },
   "devDependencies": {
+    "@types/geojson": "^7946.0.16",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }
