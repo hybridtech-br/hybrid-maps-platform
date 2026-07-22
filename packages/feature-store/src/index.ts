@@ -5,3 +5,6 @@ export * from "./SourceStore.js";
 export * from "./LayerStore.js";
 export * from "./SelectionStore.js";
 export * from "./FeatureIndex.js";
+export * from "./FeatureEvents.js";
+export * from "./FeatureEventEmitter.js";
+export * from "./FeatureStoreEventBridge.js";
