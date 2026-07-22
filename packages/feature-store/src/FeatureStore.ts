@@ -5,6 +5,7 @@ import type {
   FeatureProperties,
   Geometry,
 } from "./GeoJSON.js";
+import { FeatureEventEmitter } from "./FeatureEventEmitter.js";
 import { FeatureIndex } from "./FeatureIndex.js";
 import { TransactionManager } from "./Transactions.js";
 
@@ -20,9 +21,11 @@ export class FeatureStore<
   private features = new Map<FeatureId, Feature<G, P>>();
   private readonly transactions: TransactionManager<FeatureStoreSnapshot<G, P>>;
   readonly index: FeatureIndex;
+  readonly events: FeatureEventEmitter;
 
   constructor(initialFeatures: Array<Feature<G, P>> = []) {
     this.index = new FeatureIndex();
+    this.events = new FeatureEventEmitter();
 
     this.transactions = new TransactionManager(
       () => this.snapshot(),
@@ -42,6 +45,10 @@ export class FeatureStore<
     const stored = this.cloneFeature(feature);
     this.features.set(stored.id, stored);
     this.index.insert(stored);
+
+    this.events.emit("feature.created", { featureId: stored.id });
+    this.events.emit("feature.indexed", { featureId: stored.id });
+
     return this.cloneFeature(stored);
   }
 
@@ -53,12 +60,22 @@ export class FeatureStore<
     const stored = this.cloneFeature(updated);
     this.features.set(id, stored);
     this.index.update(stored);
+
+    this.events.emit("feature.updated", { featureId: id });
+    this.events.emit("feature.indexed", { featureId: id });
+
     return this.cloneFeature(stored);
   }
 
   removeFeature(id: FeatureId): boolean {
     this.index.remove(id);
-    return this.features.delete(id);
+    const removed = this.features.delete(id);
+
+    if (removed) {
+      this.events.emit("feature.removed", { featureId: id });
+    }
+
+    return removed;
   }
 
   getFeature(id: FeatureId): Feature<G, P> | undefined {
