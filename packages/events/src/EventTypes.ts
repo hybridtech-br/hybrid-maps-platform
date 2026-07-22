@@ -36,4 +36,8 @@ export interface HmpEventMap extends EventMap {
     readonly themeId: string;
   };
   "theme.error": { readonly themeId: string; readonly error: unknown };
+  "feature.created": { readonly featureId: string | number };
+  "feature.updated": { readonly featureId: string | number };
+  "feature.removed": { readonly featureId: string | number };
+  "feature.indexed": { readonly featureId: string | number };
 }
