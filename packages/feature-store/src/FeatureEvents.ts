@@ -16,4 +16,14 @@ export interface FeatureIndexedEvent {
   readonly featureId: FeatureId;
 }
 
-export interface SelectionChangedEvent
+export interface SelectionChangedEvent {
+  readonly selectedFeatureIds: readonly FeatureId[];
+}
+
+export interface LayerCreatedEvent {
+  readonly layerId: string;
+}
+
+export interface SourceCreatedEvent {
+  readonly sourceId: string;
+}
