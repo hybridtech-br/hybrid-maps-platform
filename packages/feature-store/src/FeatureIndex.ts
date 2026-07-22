@@ -2,9 +2,12 @@ import type {
   BoundingBox,
   Feature,
   FeatureId,
+  FeatureProperties,
   Geometry,
   Position,
 } from "./GeoJSON.js";
+
+export type IndexableFeature = Feature<Geometry | null, FeatureProperties>;
 
 export interface IndexedFeature {
   id: FeatureId;
@@ -12,8 +15,8 @@ export interface IndexedFeature {
 }
 
 export interface FeatureIndexAdapter {
-  insert(feature: Feature): void;
-  update(feature: Feature): void;
+  insert(feature: IndexableFeature): void;
+  update(feature: IndexableFeature): void;
   remove(featureId: FeatureId): boolean;
   search(bbox: BoundingBox): FeatureId[];
   clear(): void;
@@ -30,7 +33,7 @@ export interface FeatureIndexAdapter {
 export class FeatureIndex implements FeatureIndexAdapter {
   private readonly entries = new Map<FeatureId, IndexedFeature>();
 
-  insert(feature: Feature): void {
+  insert(feature: IndexableFeature): void {
     if (this.entries.has(feature.id)) {
       throw new Error(`Feature with id "${feature.id}" is already indexed.`);
     }
@@ -38,7 +41,7 @@ export class FeatureIndex implements FeatureIndexAdapter {
     this.entries.set(feature.id, this.createEntry(feature));
   }
 
-  update(feature: Feature): void {
+  update(feature: IndexableFeature): void {
     this.entries.set(feature.id, this.createEntry(feature));
   }
 
@@ -56,7 +59,7 @@ export class FeatureIndex implements FeatureIndexAdapter {
 
   getBoundingBox(featureId: FeatureId): BoundingBox | undefined {
     const bbox = this.entries.get(featureId)?.bbox;
-    return bbox ? [...bbox] as BoundingBox : undefined;
+    return bbox ? ([...bbox] as BoundingBox) : undefined;
   }
 
   has(featureId: FeatureId): boolean {
@@ -71,7 +74,7 @@ export class FeatureIndex implements FeatureIndexAdapter {
     return this.entries.size;
   }
 
-  private createEntry(feature: Feature): IndexedFeature {
+  private createEntry(feature: IndexableFeature): IndexedFeature {
     const bbox = feature.bbox ?? this.computeGeometryBoundingBox(feature.geometry);
 
     if (!bbox) {
