@@ -1,9 +1,10 @@
 import type { Coordinate } from '../geometry/Coordinate.js';
 import type { MultiPolygon } from '../geometry/MultiPolygon.js';
 import type { Polygon } from '../geometry/Polygon.js';
-import type { DistanceOptions } from './Distance.js';
-
-const EARTH_RADIUS_METERS = 6371008.8;
+import {
+  EARTH_MEAN_RADIUS_METERS,
+  type DistanceOptions,
+} from './Distance.js';
 
 function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180;
@@ -60,7 +61,7 @@ export function polygonArea(
 ): number {
   return polygonRingsArea(
     polygon.rings,
-    options.radius ?? EARTH_RADIUS_METERS,
+    options.radius ?? EARTH_MEAN_RADIUS_METERS,
   );
 }
 
@@ -68,7 +69,7 @@ export function multiPolygonArea(
   multiPolygon: MultiPolygon,
   options: DistanceOptions = {},
 ): number {
-  const radius = options.radius ?? EARTH_RADIUS_METERS;
+  const radius = options.radius ?? EARTH_MEAN_RADIUS_METERS;
 
   return multiPolygon.coordinates.reduce(
     (total, polygon) => total + polygonRingsArea(polygon, radius),
