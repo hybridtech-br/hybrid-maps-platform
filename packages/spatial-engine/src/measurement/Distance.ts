@@ -1,19 +1,43 @@
-const EARTH_RADIUS_METERS = 6371008.8;
+import type { Coordinate } from '../geometry/Coordinate.js';
+
+export const EARTH_MEAN_RADIUS_METERS = 6_371_008.8;
 
 export interface DistanceOptions {
   readonly radius?: number;
 }
 
-export function haversineDistance(
-  lon1:number, lat1:number,
-  lon2:number, lat2:number,
+function toRadians(degrees: number): number {
+  return (degrees * Math.PI) / 180;
+}
+
+export function distanceMeters(
+  start: Coordinate,
+  end: Coordinate,
   options: DistanceOptions = {},
 ): number {
-  const r = options.radius ?? EARTH_RADIUS_METERS;
-  const toRad = (d:number)=>d*Math.PI/180;
-  const dLat=toRad(lat2-lat1);
-  const dLon=toRad(lon2-lon1);
-  const a=Math.sin(dLat/2)**2+
-    Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-  return 2*r*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  const radius = options.radius ?? EARTH_MEAN_RADIUS_METERS;
+  const startLatitude = toRadians(start.latitude);
+  const endLatitude = toRadians(end.latitude);
+  const latitudeDelta = endLatitude - startLatitude;
+  const longitudeDelta = toRadians(end.longitude - start.longitude);
+
+  const sinLatitude = Math.sin(latitudeDelta / 2);
+  const sinLongitude = Math.sin(longitudeDelta / 2);
+
+  const haversine =
+    sinLatitude * sinLatitude +
+    Math.cos(startLatitude) *
+      Math.cos(endLatitude) *
+      sinLongitude *
+      sinLongitude;
+
+  const normalizedHaversine = Math.min(1, Math.max(0, haversine));
+  const centralAngle =
+    2 *
+    Math.atan2(
+      Math.sqrt(normalizedHaversine),
+      Math.sqrt(1 - normalizedHaversine),
+    );
+
+  return radius * centralAngle;
 }
