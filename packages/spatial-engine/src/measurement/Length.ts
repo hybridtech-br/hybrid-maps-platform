@@ -1,25 +1,17 @@
+import type { Coordinate } from '../geometry/Coordinate.js';
 import type { LineString } from '../geometry/LineString.js';
 import type { MultiLineString } from '../geometry/MultiLineString.js';
 import type { DistanceOptions } from './Distance.js';
-import { haversineDistance } from './Distance.js';
+import { distanceMeters } from './Distance.js';
 
 function coordinateSequenceLength(
-  coordinates: LineString['coordinates'],
+  coordinates: readonly Coordinate[],
   options: DistanceOptions = {},
 ): number {
   let total = 0;
 
   for (let index = 1; index < coordinates.length; index += 1) {
-    const previous = coordinates[index - 1];
-    const current = coordinates[index];
-
-    total += haversineDistance(
-      previous.longitude,
-      previous.latitude,
-      current.longitude,
-      current.latitude,
-      options,
-    );
+    total += distanceMeters(coordinates[index - 1], coordinates[index], options);
   }
 
   return total;
