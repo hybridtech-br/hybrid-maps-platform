@@ -1,0 +1,28 @@
+{
+  "name": "@hybrid/maps-provider-maplibre",
+  "version": "0.5.0-alpha.0",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@hybrid/maps-core": "workspace:*",
+    "@hybrid/maps-provider-sdk": "workspace:*",
+    "maplibre-gl": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
