@@ -182,13 +182,124 @@ Current inconsistency: factories allow some objects that the validator later mar
 | `Centroid` | spatial-engine, non-exported | Mixed planar/geodesic algorithm | Split and redesign |
 | `GeometryValidator` | spatial-engine, non-exported | Structural and geographic validation | Split |
 
-## 9. Confirmed defect candidate - no correction authorized yet
+## 9. Consumer inventory
+
+### 9.1 Direct package dependencies
+
+| Consumer | Direct dependency on `maps-core` | Direct dependency on `maps-spatial-engine` | Assessment |
+|---|---:|---:|---|
+| `@hybrid/maps-provider-sdk` | Yes | No | Core contracts are part of the public provider API. |
+| `@hybrid/maps-provider-maplibre` | Yes | No | Uses core directly and also indirectly through Provider SDK. |
+| `@hybrid/maps-playground` | Yes | No | Constructs `Coordinate` and `Viewport` directly. |
+| `@hybrid/maps-runtime` | No | No | Runtime remains independent from geometry packages. |
+| `@hybrid/maps-feature-store` | No | No | Depends only on `@hybrid/maps-events` at package level. |
+
+No current package manifest inspected declares `@hybrid/maps-spatial-engine` as a dependency. This means its public API appears isolated inside the repository at this stage, subject to test/source verification.
+
+### 9.2 Symbol-level consumers of `maps-core`
+
+#### Provider SDK
+
+The Provider SDK imports these core symbols as public contract dependencies:
+
+- `BoundingBox`;
+- `Coordinate`;
+- `Geometry`;
+- `Viewport`.
+
+They appear in exported interfaces such as:
+
+- `CreateMapOptions`;
+- `LayerDefinition`;
+- `MarkerDefinition`;
+- `PopupDefinition`;
+- `ICameraAdapter`;
+- `IMapAdapter`.
+
+Impact: changing these core contracts is not an internal refactor. It changes the provider contract surface and affects every provider implementation and application consumer.
+
+#### MapLibre provider
+
+The MapLibre adapter consumes:
+
+- `Coordinate` for center, markers and popups;
+- `Viewport` for camera conversion;
+- `BoundingBox` for `fitBounds`;
+- `Geometry` for conversion to GeoJSON.
+
+The provider also constructs a new core `Coordinate` when returning the current center.
+
+Impact: compatibility adapters must preserve property names and construction behavior until the provider is migrated.
+
+#### Playground
+
+The Playground directly constructs:
+
+- `Coordinate` for the Rio de Janeiro reference point;
+- `Viewport` for initial and animated camera states.
+
+Impact: it is a visible acceptance consumer and should remain operational throughout migration.
+
+### 9.3 Dependency chain
+
+Current confirmed chain:
+
+```text
+Playground
+  -> maps-core
+  -> provider-sdk
+  -> provider-maplibre
+
+provider-maplibre
+  -> maps-core
+  -> provider-sdk
+  -> maplibre-gl
+
+provider-sdk
+  -> maps-core
+
+runtime
+  -> no geometry dependency
+
+feature-store
+  -> events
+```
+
+More precisely, the provider path is:
+
+```text
+Playground
+  -> Provider SDK contracts
+  -> MapLibre provider implementation
+  -> maps-core value objects and geometry union
+```
+
+### 9.4 Migration sensitivity
+
+Highest compatibility sensitivity:
+
+1. `Coordinate`;
+2. `Viewport`;
+3. `BoundingBox`;
+4. core `Geometry` union.
+
+Reason: these symbols cross package boundaries through public interfaces.
+
+Lower current repository sensitivity:
+
+- Spatial Engine geometry and measurement exports.
+
+Reason: no inspected package manifest currently consumes `@hybrid/maps-spatial-engine`.
+
+This does not mean they are safe to break externally; the package is public and may have consumers outside this repository. External consumer verification remains required before a major API change.
+
+## 10. Confirmed defect candidate - no correction authorized yet
 
 `GeometryFactory.point(coordinate)` forwards a `Coordinate` object to `createPoint`, while the inspected `createPoint` contract accepts numeric longitude, latitude and optional altitude arguments.
 
 This remains a build/type defect candidate. It must be confirmed by build or test evidence before correction.
 
-## 10. Current conclusions
+## 11. Current conclusions
 
 1. The existing geometry layer is reusable in intent but geographic in representation.
 2. Most geometry types should be split into generic HGK primitives plus geospatial compatibility contracts.
@@ -196,15 +307,18 @@ This remains a build/type defect candidate. It must be confirmed by build or tes
 4. Centroid behavior must be redesigned because it mixes spherical weighting and planar formulas.
 5. Validation must be separated into structural geometry rules and Earth-coordinate rules.
 6. Construction and validation policies are currently inconsistent.
-7. No migration is authorized yet.
+7. `maps-core` is compatibility-critical because Provider SDK exposes its types publicly.
+8. Spatial Engine appears internally isolated in the inspected workspace, but external consumers remain unknown.
+9. Runtime and Feature Store are currently outside the geometry migration path.
+10. No migration is authorized yet.
 
-## 11. Remaining work for Phase 0.3
+## 12. Remaining work for Phase 0.3
 
 - inspect tests and characterize current expected behavior;
-- identify consumers/imports across runtime, provider SDK, provider MapLibre, feature store and playground;
 - catalogue every public symbol exported by both packages;
 - confirm non-exported code reachability;
 - validate the recorded defect candidate through build/test evidence;
+- verify whether Spatial Engine has external consumers or documented compatibility commitments;
 - finalize compatibility-sensitive API classifications.
 
 Phase 0.3 remains open.
