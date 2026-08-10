@@ -30,7 +30,11 @@ export const GeometryFactory = Object.freeze({
   },
 
   point(coordinate: Coordinate): Point {
-    return createPoint(coordinate);
+    return createPoint(
+      coordinate.longitude,
+      coordinate.latitude,
+      coordinate.altitude,
+    );
   },
 
   lineString(coordinates: readonly Coordinate[]): LineString {
