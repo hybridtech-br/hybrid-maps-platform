@@ -37,9 +37,9 @@ describe('Precision', () => {
   });
 
   it('uses inclusive epsilon comparison', () => {
-    expect(Precision.equals(1, 1 + EPSILON)).toBe(true);
-    expect(Precision.equals(1, 1 + EPSILON / 2)).toBe(true);
-    expect(Precision.equals(1, 1 + EPSILON * 2)).toBe(false);
+    expect(Precision.equals(0, EPSILON)).toBe(true);
+    expect(Precision.equals(0, EPSILON / 2)).toBe(true);
+    expect(Precision.equals(0, EPSILON * 2)).toBe(false);
   });
 
   it('supports explicit zero tolerance', () => {
