@@ -21,3 +21,16 @@ export {
   type GeometryValidationIssue2,
   type GeometryValidationResult2,
 } from './validation/GeometryValidator2.js';
+export { planarDistance2, planarDistanceSquared2 } from './algorithms/PlanarDistance.js';
+export {
+  planarSegmentLength2,
+  planarLineStringLength2,
+  planarMultiLineStringLength2,
+} from './algorithms/PlanarLength.js';
+export {
+  planarLinearRingArea2,
+  planarPolygonArea2,
+  planarMultiPolygonArea2,
+} from './algorithms/PlanarArea.js';
+export { planarCentroid2 } from './algorithms/PlanarCentroid.js';
+export { planarBoundingEnvelope2 } from './algorithms/PlanarEnvelope.js';
