@@ -1,0 +1,19 @@
+{
+  "name": "@hybrid/maps-api-contract-tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "test": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@hybrid/maps-core": "workspace:*",
+    "@hybrid/maps-spatial-engine": "workspace:*",
+    "@hybrid/maps-provider-sdk": "workspace:*",
+    "@hybrid/maps-provider-maplibre": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
