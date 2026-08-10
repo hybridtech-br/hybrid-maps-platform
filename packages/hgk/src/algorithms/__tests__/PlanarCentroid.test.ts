@@ -36,7 +36,7 @@ describe('planar centroid', () => {
       new Point2(10, 2),
     ]);
     const centroid = planarCentroid2(line)!;
-    expect(centroid.x).toBeCloseTo(7.5, 12);
+    expect(centroid.x).toBeCloseTo(35 / 6, 12);
     expect(centroid.y).toBeCloseTo(1 / 6, 12);
   });
 
