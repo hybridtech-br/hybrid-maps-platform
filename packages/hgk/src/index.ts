@@ -1,2 +1,1 @@
-// Public HGK exports are added incrementally by roadmap wave.
-export {};
+export { EPSILON, Precision } from './precision/Precision.js';
