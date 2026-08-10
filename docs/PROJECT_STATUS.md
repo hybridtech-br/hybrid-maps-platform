@@ -32,8 +32,9 @@ Until superseded by an explicit owner decision, the V1 engineering baseline is:
 6. HGK Phase 0.5: approved planning baseline.
 7. Wave 0 — safety net and characterization: **COMPLETE — CI GREEN**.
 8. Wave 1 — HGK mathematical foundation: **COMPLETE — CI GREEN**.
-9. Wave 2 — HGK geometry and planar algorithms: **AUTHORIZED / NEXT**.
-10. Waves 3–5: gated by the acceptance criteria in `architecture/HGK_MIGRATION_PLAN.md`.
+9. Wave 2 — HGK geometry and planar algorithms: **COMPLETE — CI GREEN**.
+10. Wave 3 — Spatial Engine bridge and geographic semantics: **AUTHORIZED / NEXT**.
+11. Waves 4–5: gated by the acceptance criteria in `architecture/HGK_MIGRATION_PLAN.md`.
 
 ## Wave 0 completion record
 
@@ -71,6 +72,24 @@ Wave 1 scope comparison from `afbb11047b7ea152c8b54be620543c3ccb0d823a` to `6de2
 
 One test-only correction was made while reaching the gate: the inclusive epsilon boundary assertion was changed from `1` versus `1 + EPSILON` to `0` versus `EPSILON`, because the former difference is not exactly representable as `1e-9` in IEEE-754. The production precision policy remained unchanged.
 
+## Wave 2 completion record
+
+Completed in roadmap order:
+
+- M2.1 primitive geometry: `Segment2`, `LineString2`, `LinearRing2` and `Polygon2`;
+- M2.2 aggregate geometry: `MultiPoint2`, `MultiLineString2`, `MultiPolygon2` and recursive `GeometryCollection2`;
+- M2.3 structural `validateGeometry2` with stable validation codes, deterministic paths and explicit empty/nesting policies;
+- M2.4 explicitly planar distance, length, area, centroid and bounding-envelope algorithms;
+- M2.5 geometry/API review and Wave 2 documentation in `docs/api/HGK_API.md`.
+
+The final Wave 2 HGK gate completed successfully on commit `02d0cb641af62d798a0b15f047bc1b2dbb2001a0` (GitHub Actions run 31435907865). The Wave 0 compatibility gate also remained green on the same commit (run 31435907888).
+
+Wave 2 scope comparison from `850798a36d27dbbdfdfa4791c7b230fe0a01119f` to `02d0cb641af62d798a0b15f047bc1b2dbb2001a0` confirms that the wave modified only `packages/hgk` and `docs/api/HGK_API.md`; no Spatial Engine, Maps Core, provider or application consumer was migrated prematurely.
+
+The Wave 2 centroid policy is explicitly planar. In particular, `GeometryCollection2` uses equal weighting of non-empty child centroids. Geographic/geodesic centroid semantics remain reserved for the Spatial Engine bridge.
+
+A test-only reference correction was made during M2.4: the expected length-weighted centroid for `(0,0) -> (10,0) -> (10,2)` was corrected from `7.5` to `35/6`; the production algorithm was unchanged.
+
 ## Known technical debt intentionally outside the completed waves
 
 - the pre-existing Runtime test source does not currently compile against its implementation;
@@ -80,17 +99,16 @@ One test-only correction was made while reaching the gate: the inclusive epsilon
 
 Authorized now, in order:
 
-- M2.1 implement primitive geometry;
-- M2.2 implement aggregate geometry;
-- M2.3 implement structural validation;
-- M2.4 implement planar algorithms;
-- M2.5 complete geometry API review;
-- Wave 2 build/test/dependency verification.
+- M3.1 add the geographic-coordinate wrapper in Spatial Engine;
+- M3.2 add the geographic-bounds wrapper;
+- M3.3 add coordinate and bounds adapters between Spatial Engine and HGK;
+- M3.4 add geometry adapters;
+- M3.5 separate and document planar versus geospatial centroid policies;
+- Wave 3 adapter round-trip/build/test/dependency verification.
 
 Not yet authorized by sequence:
 
-- Spatial Engine bridge before Wave 2 exit criteria are green;
-- consumer migration before Gate B;
+- consumer migration before Gate B is green;
 - deprecation before Gate C;
 - breaking public API changes without explicit versioning approval.
 
@@ -100,4 +118,4 @@ All HYBRID Maps Platform first-party UI and visual documentation must follow the
 
 ## Next action
 
-Execute Wave 2 in roadmap order, beginning with M2.1 primitive geometry. Do not begin aggregate geometry before the primitive geometry contract is implemented and tested. Stop only at a decision that genuinely requires project-owner judgment.
+Execute Wave 3 in roadmap order, beginning with M3.1 `GeographicCoordinate` in the Spatial Engine. HGK remains geography-free. Haversine distance, bearing, spherical area, CRS/projection and geographic validation remain Spatial Engine responsibilities. Stop only at a decision that genuinely requires project-owner judgment.
