@@ -31,8 +31,9 @@ Until superseded by an explicit owner decision, the V1 engineering baseline is:
 5. D5 — Documentation readiness audit: production-release gate.
 6. HGK Phase 0.5: approved planning baseline.
 7. Wave 0 — safety net and characterization: **COMPLETE — CI GREEN**.
-8. Wave 1 — HGK mathematical foundation: **AUTHORIZED / IN PROGRESS**.
-9. Waves 2–5: gated by the acceptance criteria in `architecture/HGK_MIGRATION_PLAN.md`.
+8. Wave 1 — HGK mathematical foundation: **COMPLETE — CI GREEN**.
+9. Wave 2 — HGK geometry and planar algorithms: **AUTHORIZED / NEXT**.
+10. Waves 3–5: gated by the acceptance criteria in `architecture/HGK_MIGRATION_PLAN.md`.
 
 ## Wave 0 completion record
 
@@ -52,27 +53,43 @@ Additional strict-build fixes made while reaching the gate:
 - Centroid reducer accumulator typing fixed without numerical behavior change (ADR-002);
 - MapLibre raw GeoJSON boundary cast made explicit without runtime behavior change.
 
-Known unrelated technical debt discovered but not pulled into this wave:
+## Wave 1 completion record
+
+Completed in roadmap order:
+
+- M1.1 HGK package skeleton and strict TypeScript build;
+- M1.2 `Precision` with the official `EPSILON = 1e-9`, finite-value enforcement and exact/approximate comparison semantics;
+- M1.3 immutable `Vector2` with algebraic operations and tests;
+- M1.4 immutable `Point2` with explicit `Vector2` conversion and tests;
+- M1.5 immutable `Envelope2` with inclusive containment/intersection, union, center, width/height and degenerate-envelope coverage;
+- M1.6 public API documentation in `docs/api/HGK_API.md`;
+- independent `HGK Foundation Gates` workflow covering build, tests and forbidden-dependency checks.
+
+The first green Wave 1 gate completed successfully on commit `6de2edf0ed6d38786b9f911ed2baf3f9cc11dc89` (GitHub Actions run 31434720149). The existing Wave 0 gate also remained green on the same commit (run 31434720751).
+
+Wave 1 scope comparison from `afbb11047b7ea152c8b54be620543c3ccb0d823a` to `6de2edf0ed6d38786b9f911ed2baf3f9cc11dc89` confirms that no existing consumer package was modified: changes are restricted to `packages/hgk`, HGK documentation and the HGK-specific CI workflow.
+
+One test-only correction was made while reaching the gate: the inclusive epsilon boundary assertion was changed from `1` versus `1 + EPSILON` to `0` versus `EPSILON`, because the former difference is not exactly representable as `1e-9` in IEEE-754. The production precision policy remained unchanged.
+
+## Known technical debt intentionally outside the completed waves
 
 - the pre-existing Runtime test source does not currently compile against its implementation;
-- the pre-existing HGK package was only a manifest placeholder before Wave 1;
 - the repository still lacks a committed `pnpm-lock.yaml`; current migration CI installs without frozen lockfile until reproducibility hardening is completed.
 
 ## Current development authorization
 
 Authorized now, in order:
 
-- M1.1 establish the HGK package skeleton;
-- M1.2 implement Precision;
-- M1.3 implement Vector2;
-- M1.4 implement Point2;
-- M1.5 implement Envelope2;
-- M1.6 publish HGK API documentation;
-- Wave 1 build/test/forbidden-dependency verification.
+- M2.1 implement primitive geometry;
+- M2.2 implement aggregate geometry;
+- M2.3 implement structural validation;
+- M2.4 implement planar algorithms;
+- M2.5 complete geometry API review;
+- Wave 2 build/test/dependency verification.
 
 Not yet authorized by sequence:
 
-- Wave 2 geometry family before Wave 1 exit criteria are green;
+- Spatial Engine bridge before Wave 2 exit criteria are green;
 - consumer migration before Gate B;
 - deprecation before Gate C;
 - breaking public API changes without explicit versioning approval.
@@ -83,4 +100,4 @@ All HYBRID Maps Platform first-party UI and visual documentation must follow the
 
 ## Next action
 
-Execute Wave 1 M1.1–M1.6 in order and require a green Wave 1 gate before entering Wave 2. Stop only at a decision that genuinely requires project-owner judgment.
+Execute Wave 2 in roadmap order, beginning with M2.1 primitive geometry. Do not begin aggregate geometry before the primitive geometry contract is implemented and tested. Stop only at a decision that genuinely requires project-owner judgment.
