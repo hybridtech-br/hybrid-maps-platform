@@ -88,7 +88,7 @@ class MapLibreLayerAdapter implements ILayerAdapter {
         : layer.source;
       this.map.addSource(source, {
         type: "geojson",
-        data: data as GeoJSON.Feature | GeoJSON.FeatureCollection,
+        data: data as unknown as GeoJSON.Feature | GeoJSON.FeatureCollection,
       } satisfies GeoJSONSourceSpecification);
       this.#ownedSources.set(layer.id, source);
     }
