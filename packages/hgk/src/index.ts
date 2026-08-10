@@ -15,3 +15,9 @@ export {
   type Geometry2Json,
   type GeometryCollection2Json,
 } from './geometry/GeometryCollection2.js';
+export {
+  validateGeometry2,
+  type GeometryValidationCode2,
+  type GeometryValidationIssue2,
+  type GeometryValidationResult2,
+} from './validation/GeometryValidator2.js';
