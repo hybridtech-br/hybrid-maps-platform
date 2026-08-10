@@ -1,7 +1,7 @@
 # HYBRID Maps Platform — Product Requirements Document
 
 Document ID: PRD-01
-Status: Draft — Documentation Freeze
+Status: **V1 Baseline Approved for Engineering**
 Date: 2026-08-10
 
 ## 1. Product definition
@@ -18,38 +18,91 @@ HYBRID Maps Platform (HMP) is the provider-neutral geospatial platform of HYBRID
 6. Preserve security, privacy and licensing boundaries for location and provider data.
 7. Provide an evolution path that does not couple consuming products to MapLibre, Google Maps, HERE or another concrete provider.
 
-## 3. Existing baseline
+## 3. V1 engineering baseline
 
-The repository already identifies these architectural/package responsibilities:
+The V1 baseline adopted on 2026-08-10 is:
 
-- Maps Core: provider-neutral map-facing contracts and value objects;
-- Runtime: microkernel, lifecycle, capabilities and orchestration;
-- Provider SDK: provider-neutral adapter contracts and registry;
-- MapLibre Provider: concrete rendering/camera/layer/marker/popup/control integration;
-- Spatial Engine: geographic algorithms and semantics;
-- HGK: generic Earth-agnostic mathematical/geometry kernel.
+- HMP is an internal platform/SDK for first-party HYBRID products;
+- MapLibre is the first production rendering provider;
+- HMP V1 does not require a HYBRID-hosted geospatial backend;
+- HMP V1 does not persist user or location history;
+- HYBRID Starlink Tracker is the first integration/reference consumer;
+- geocoding and reverse geocoding are post-V1;
+- routing/navigation is post-V1;
+- offline map/data support is post-V1.
 
-## 4. Intended consumers
+The baseline can evolve through explicit product decisions and semantic versioning. It must not be used to justify breaking current public contracts during the HGK migration.
 
-Current repository baseline identifies:
+## 4. V1 functional scope
 
-- HYBRID Starlink Tracker;
+V1 includes:
+
+- provider-neutral map creation and lifecycle;
+- MapLibre provider;
+- viewport and camera control;
+- layers;
+- markers;
+- popups;
+- map controls;
+- normalized provider events;
+- provider registry and capability discovery;
+- stable coordinate, bounds and geometry contracts;
+- public TypeScript API for first-party consumers;
+- HGK generic mathematical/planar geometry foundation;
+- Spatial Engine geographic semantics and adapters;
+- HYBRID-branded playground/reference application;
+- integration path and acceptance scenario for HYBRID Starlink Tracker.
+
+## 5. V1 exclusions
+
+Deferred beyond V1 unless explicitly reprioritized:
+
+- Google Maps/HERE production adapters;
+- routing/navigation;
+- geocoding/reverse geocoding;
+- offline map packs;
+- terrain/3D;
+- satellite imagery services as an HMP-owned provider service;
+- persistent user-location history;
+- HMP-owned persistent geospatial user datastore;
+- standalone end-user Maps application;
+- public third-party SaaS API.
+
+## 6. Architecture baseline
+
+- Maps Core: provider-neutral map-facing contracts and compatibility facades.
+- Runtime: microkernel, lifecycle, capabilities and orchestration.
+- Provider SDK: provider-neutral adapter contracts and registry.
+- MapLibre Provider: concrete rendering/camera/layer/marker/popup/control integration.
+- Spatial Engine: geographic algorithms, CRS/Earth semantics and HGK adapters.
+- HGK: generic Earth-agnostic mathematical and geometry kernel.
+
+Dependency direction and migration rules are governed by `../architecture/HGK_DEPENDENCY_MAP.md` and `../architecture/HGK_MIGRATION_PLAN.md`.
+
+## 7. Intended consumers
+
+Primary V1 consumer/reference integration:
+
+- HYBRID Starlink Tracker.
+
+Additional intended first-party consumers:
+
 - HYBRID Monitor;
 - HYBRID Home Assistant;
 - Micael Security;
 - future HYBRID products.
 
-Product integration must respect each consuming product's own architecture and security boundaries. A consumer relationship does not imply shared authentication, database or infrastructure.
+A consumer relationship does not imply shared authentication, databases or infrastructure. Product security boundaries remain independent where defined by the respective product architecture.
 
-## 5. Product principles
+## 8. Product principles
 
 ### Provider neutrality
 
-Consumers should use HMP contracts rather than concrete provider objects whenever a provider-neutral abstraction exists.
+Consumers use HMP contracts rather than concrete provider objects whenever a provider-neutral abstraction exists.
 
 ### Capability discovery
 
-Optional provider features should be represented as discoverable capabilities rather than assumed globally.
+Optional provider features are discoverable capabilities rather than globally assumed functionality.
 
 ### Layered geospatial semantics
 
@@ -60,127 +113,45 @@ Optional provider features should be represented as discoverable capabilities ra
 
 ### Progressive compatibility
 
-Public contracts must evolve through semantic versioning, explicit deprecation and migration guidance.
+Public contracts evolve through semantic versioning, explicit deprecation and migration guidance.
+
+### Privacy by minimization
+
+V1 does not create an HMP-owned location-history datastore. Consumer applications remain responsible for their own domain persistence when applicable.
 
 ### HYBRID visual identity
 
-All first-party HMP UI/documentation follows the approved HYBRID master identity. Maps-specific visual motifs are subordinate to the corporate brand.
+All first-party HMP UI/documentation follows the approved HYBRID master identity. Maps-specific visual motifs remain subordinate to the corporate brand.
 
-## 6. Candidate capability domains
+## 9. V1 non-functional baseline
 
-The following domains are supported by existing architecture or historical roadmap evidence, but their V1 inclusion remains subject to scope approval:
+Detailed measurable thresholds remain governed by NFR documentation and CI policy. V1 must at minimum provide:
 
-- map rendering;
-- camera/viewport control;
-- layers;
-- markers;
-- popups;
-- controls;
-- provider registry/resolution;
-- normalized provider events;
-- coordinates, bounds, CRS and projections;
-- geometry and geospatial algorithms;
-- React integration;
-- provider-independent public `HybridMaps` facade;
-- Starlink Tracker integration.
+- deterministic builds and tests;
+- supported TypeScript/runtime matrix documented before release;
+- numerical validation according to HGK numerical policy;
+- public API compatibility checks;
+- provider boundary checks;
+- no forbidden HGK imports;
+- observability for first-party reference/runtime failures where applicable;
+- accessible first-party reference UI;
+- licensing and attribution compliance for MapLibre and map-data sources.
 
-Potential future domains requiring explicit scope decisions:
+## 10. Security and privacy baseline
 
-- geocoding/reverse geocoding;
-- routing/navigation;
-- offline maps;
-- terrain/elevation;
-- satellite imagery;
-- geofencing;
-- spatial search;
-- persistent feature storage;
-- real-time location streams.
+- provider credentials must not be committed to source;
+- secrets remain outside HGK and provider-neutral domain contracts;
+- precise location is processed only when a consumer feature requires it;
+- HMP V1 itself does not retain user-location history;
+- telemetry follows data minimization;
+- provider licensing/caching rules must be documented before production integration;
+- threat model and trust boundaries remain mandatory release documentation.
 
-## 7. V1 scope — not yet approved
+## 11. Provider requirements
 
-The repository does not contain sufficient product evidence to declare a final V1 scope. The following conservative candidate is documented for decision, not implementation authorization:
+Every provider integration documents:
 
-### Candidate V1 core
-
-- provider-neutral map creation and lifecycle;
-- MapLibre as the first concrete rendering provider;
-- viewport/camera;
-- layers;
-- markers;
-- popups;
-- controls;
-- normalized events;
-- provider registry and capability discovery;
-- stable coordinate/bounds/geometry contracts;
-- public TypeScript API;
-- integration path for one first-party HYBRID consumer;
-- HYBRID-branded playground/reference application for validation/documentation only.
-
-### Candidate V1 exclusions
-
-Unless explicitly approved, defer:
-
-- Google Maps/HERE production adapters;
-- routing/navigation;
-- geocoding;
-- offline map packs;
-- terrain/3D;
-- satellite imagery services;
-- persistent user-location history;
-- standalone end-user Maps application;
-- public third-party SaaS API.
-
-## 8. User/stakeholder groups
-
-### Primary
-
-- HYBRID product developers and architects;
-- first-party HYBRID applications consuming maps/geospatial capabilities.
-
-### Secondary/future
-
-- operations teams;
-- partner integrations;
-- external developers, only if a public SDK/API is later approved.
-
-## 9. Success criteria — requires target values
-
-The product will require measurable targets for:
-
-- map startup latency;
-- interaction/rendering performance;
-- provider-switch compatibility;
-- API stability;
-- supported browser/runtime matrix;
-- bundle/package size where relevant;
-- geospatial numerical accuracy;
-- availability/SLO for any hosted services;
-- error/telemetry observability;
-- accessibility for first-party UI.
-
-Target values belong to NFR-01 and remain pending.
-
-## 10. Security and privacy requirements — high level
-
-Before development release, HMP must define:
-
-- whether it processes precise user location;
-- authentication/authorization ownership;
-- provider credential handling;
-- secret storage boundaries;
-- telemetry/data minimization;
-- retention policy;
-- provider data licensing/caching constraints;
-- threat model and trust boundaries.
-
-Detailed specification belongs to SEC-01 and PRIV-01.
-
-## 11. Provider requirements — high level
-
-Each provider integration must document:
-
-- supported capabilities;
-- unsupported capabilities;
+- supported and unsupported capabilities;
 - license and attribution requirements;
 - quota/rate-limit behavior;
 - caching restrictions;
@@ -189,7 +160,7 @@ Each provider integration must document:
 - version compatibility;
 - data residency/privacy implications when applicable.
 
-Detailed matrix belongs to DEP-01.
+MapLibre is the only required production provider for V1.
 
 ## 12. Compatibility requirements
 
@@ -198,55 +169,34 @@ Detailed matrix belongs to DEP-01.
 - External-consumer status must be verified before removing or narrowing published exports.
 - Breaking changes require a major-version decision.
 
-## 13. Documentation and support requirements
+## 13. Documentation and release requirements
 
-Before development readiness can be approved, documentation must include:
+Before V1 production release, documentation must include:
 
 - quick-start architecture overview;
 - API/integration architecture;
-- provider matrix;
+- MapLibre provider matrix;
 - security/data/privacy boundaries;
 - deployment/runtime support matrix;
 - ADR index;
 - product roadmap and risk register;
-- visual/UX rules for first-party interfaces.
+- visual/UX rules for first-party interfaces;
+- migration and rollback guidance.
 
-## 14. Open product decisions requiring owner approval
+## 14. Product decision record
 
-These decisions materially change scope, cost or architecture and are not inferable safely from current repository evidence:
+Resolved baseline decisions:
 
-### PD-01 — V1 product scope
-
-Approve or change the Candidate V1 core/exclusions in section 7.
-
-### PD-02 — First production consumer
-
-Select which HYBRID product is the first production integration target. Historical repository text points to Starlink Tracker, but this must be reconfirmed against current portfolio priorities.
-
-### PD-03 — Provider scope for V1
-
-Decide whether V1 ships only MapLibre or also includes production adapters for Google Maps, HERE or others.
-
-### PD-04 — Hosted services
-
-Decide whether V1 is only an embeddable/client-side platform/SDK or also includes HYBRID-hosted geospatial backend services.
-
-### PD-05 — Persistent data ownership
-
-Decide whether HMP itself stores geospatial/user/location data in V1 or remains stateless/provider-facing.
-
-### PD-06 — Geocoding and routing
-
-Decide whether geocoding/reverse geocoding and routing/navigation are V1 requirements or post-V1 capabilities.
-
-### PD-07 — Offline support
-
-Decide whether offline maps/data are required in V1.
+- PD-01 V1 scope: resolved by sections 3–5.
+- PD-02 first production/reference consumer: HYBRID Starlink Tracker.
+- PD-03 provider scope: MapLibre only for V1 production requirement.
+- PD-04 hosted services: no HMP-hosted geospatial backend required in V1.
+- PD-05 persistent data ownership: HMP V1 remains stateless with respect to user/location history.
+- PD-06 geocoding/routing: post-V1.
+- PD-07 offline support: post-V1.
 
 ## 15. Gate status
 
-PRD status: **Draft / Blocked on PD-01 through PD-07**.
+PRD status: **V1 baseline approved for engineering**.
 
-Development authorization: **No**.
-
-Documentation may continue in domains that do not depend on these decisions, but final functional/NFR scope and several architecture documents cannot be approved until the owner resolves the product decisions above.
+Documentation is a living engineering artifact and must continue to mature alongside implementation. The former Documentation Freeze has been released. HGK implementation remains governed by the Wave 0–5 gates in the migration plan.
