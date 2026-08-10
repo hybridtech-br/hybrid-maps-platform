@@ -12,6 +12,14 @@ describe("GeometryFactory characterization", () => {
     expect(GeometryFactory.coordinate(1, 2, 3)).toEqual({ longitude: 1, latitude: 2, altitude: 3 });
   });
 
+  it("creates Point from Coordinate", () => {
+    const coordinate = createCoordinate(-43.1729, -22.9068, 5);
+    const point = GeometryFactory.point(coordinate);
+    expect(point.type).toBe("Point");
+    expect(point.coordinate).toEqual(coordinate);
+    expect(point.coordinate).not.toBe(coordinate);
+  });
+
   it("creates line strings, polygons and collections", () => {
     const a = createCoordinate(0, 0);
     const b = createCoordinate(1, 1);
@@ -22,11 +30,5 @@ describe("GeometryFactory characterization", () => {
     expect(line.type).toBe("LineString");
     expect(polygon.type).toBe("Polygon");
     expect(collection.geometries).toHaveLength(2);
-  });
-
-  it.skip("creates Point from Coordinate after M0.3 defect resolution", () => {
-    const coordinate = createCoordinate(-43.1729, -22.9068);
-    const point = GeometryFactory.point(coordinate);
-    expect(point.coordinate).toEqual(coordinate);
   });
 });
