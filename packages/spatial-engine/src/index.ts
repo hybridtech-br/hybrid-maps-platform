@@ -1,4 +1,6 @@
 export * from './coordinates/GeographicCoordinate.js';
+export * from './bounds/GeographicBounds.js';
+export * from './adapters/HgkCoordinateAdapter.js';
 
 export * from './geometry/Coordinate.js';
 export * from './geometry/BoundingBox.js';
