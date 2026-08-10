@@ -1,3 +1,5 @@
+export * from './coordinates/GeographicCoordinate.js';
+
 export * from './geometry/Coordinate.js';
 export * from './geometry/BoundingBox.js';
 export * from './geometry/Point.js';
