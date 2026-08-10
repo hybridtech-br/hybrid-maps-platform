@@ -1,59 +1,61 @@
 # HYBRID Maps Platform — Project Status
 
 Date: 2026-08-10
-Status: **DOCUMENTATION FREEZE — ACTIVE**
-Development: **BLOCKED**
+Status: **DOCUMENTATION FREEZE — RELEASED BY PROJECT OWNER**
+Development: **AUTHORIZED SUBJECT TO ROADMAP GATES**
 
 ## Governing rule
 
-No software development activity may start or resume until the project owner explicitly releases the Documentation Freeze.
+On 2026-08-10 the project owner explicitly released the Documentation Freeze and authorized autonomous continuation of the HYBRID Maps Platform/HGK project.
 
-This status supersedes any earlier document text that described executable characterization tests, HGK implementation, CI/CD implementation, homologation or deployment as the next authorized action.
+Work must continue in roadmap order. No roadmap step may be skipped. Architecture, characterization, compatibility, security and CI gates remain mandatory even though the documentation freeze is no longer active.
 
-## Authorized work
+## Current product baseline
 
-- technical and architectural documentation review;
-- requirements review and consolidation;
-- UX/UI documentation and approved HYBRID visual-identity consolidation;
-- security, infrastructure, database/data and API documentation;
-- integration and external-dependency review;
-- roadmap, schedule and risk review;
-- diagrams and ADRs;
-- correction of documentation inconsistencies;
-- identification and documentation of missing decisions.
+Until superseded by an explicit owner decision, the conservative V1 baseline is adopted as the engineering baseline:
 
-## Blocked work
+- HYBRID Maps Platform is an internal provider-neutral platform/SDK for first-party HYBRID products;
+- MapLibre is the initial production rendering provider;
+- V1 does not require a HYBRID-hosted geospatial backend;
+- V1 does not persist user/location history in HMP;
+- HYBRID Starlink Tracker is the first integration/reference consumer;
+- geocoding, routing/navigation and offline maps are post-V1 capabilities;
+- provider-neutral contracts, capability discovery, normalized events and HGK/Spatial Engine boundaries remain mandatory.
 
-- product implementation;
-- production API implementation;
-- definitive database creation;
-- frontend/backend/desktop/mobile development;
-- automated software test implementation;
-- production CI/CD pipeline implementation;
-- homologation;
-- deployment.
+This baseline is reversible by an explicit owner decision and does not authorize breaking existing public contracts.
 
-## Current documentation gate result
+## Roadmap state
 
-Development readiness: **NO**.
+1. D1 — Governance/source of truth: complete enough to proceed; continue maintenance as living documentation.
+2. D2 — Product definition: baseline established; PRD consolidation authorized.
+3. D3 — Architecture completion: continue in parallel where it does not violate migration sequencing.
+4. D4 — Experience and operations: continue before production release.
+5. D5 — Documentation readiness audit: remains a release gate, not a development freeze.
+6. HGK Phase 0.5: approved planning baseline.
+7. Wave 0 — safety net and characterization: **AUTHORIZED NEXT IMPLEMENTATION WAVE**.
+8. Waves 1–5: gated by the acceptance criteria in `architecture/HGK_MIGRATION_PLAN.md`.
 
-Primary reason: the repository contains a strong HGK technical/migration documentation set but does not yet contain a complete product-level requirements, security, data, API/integration, infrastructure, UX/operations and risk baseline for the complete HYBRID Maps Platform.
+## Development authorization
 
-See `HGK_DOCUMENTATION_FREEZE_AUDIT.md` for the detailed seven-point gate assessment.
+Authorized now:
 
-## Current documentation roadmap
+- Wave 0 characterization tests;
+- API compile fixtures;
+- GeometryFactory defect investigation/decision record;
+- CI integration needed to execute Wave 0 gates;
+- documentation updates required by the roadmap.
 
-1. D1 — Governance/source of truth: **IN PROGRESS**.
-2. D2 — Product definition: **NEXT**.
-3. D3 — Architecture completion: pending.
-4. D4 — Experience and operations: pending.
-5. D5 — Final documentation audit and Development Readiness Report: pending.
-6. Owner authorization: mandatory before development.
+Not yet authorized by sequence:
+
+- Wave 1 HGK production primitives before Wave 0 exit criteria are green;
+- consumer migration before Gate B;
+- deprecation before Gate C;
+- breaking public API changes without explicit versioning approval.
 
 ## Visual identity rule
 
-All HYBRID Maps Platform visual documentation must follow the approved HYBRID corporate identity supplied by the project owner: black/dark graphite base, white/light gray, HYBRID green accent, corporate HYBRID mark/wordmark language, minimalist technological line iconography and consistent HYBRID typography/design language. Maps-specific motifs may include geolocation, layers, routes, terrain/topographic lines and geospatial data, but must remain subordinate to the HYBRID master brand.
+All HYBRID Maps Platform first-party UI and visual documentation must follow the approved HYBRID corporate identity: black/dark graphite base, white/light gray, HYBRID green accent, corporate HYBRID mark/wordmark language, minimalist technological line iconography and consistent HYBRID typography/design language. Maps-specific motifs may include geolocation, layers, routes, terrain/topographic lines and geospatial data, subordinate to the HYBRID master brand.
 
-## Next permitted action
+## Next action
 
-Complete D1 governance consolidation, then begin D2 Product Definition documentation. No code or automated software tests are authorized.
+Execute Wave 0 in roadmap order: M0.1 Maps Core characterization, M0.2 Spatial Engine characterization, M0.3 GeometryFactory decision, M0.4 API compile fixtures, M0.5 CI integration. Stop only at a gate that genuinely requires project-owner judgment.
