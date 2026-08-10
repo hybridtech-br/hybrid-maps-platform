@@ -1,5 +1,8 @@
 # HYBRID Maps Platform
 
+> **DOCUMENTATION FREEZE — ACTIVE (2026-08-10)**  
+> Development, automated software-test implementation, production CI/CD, homologation and deployment are blocked until explicit project-owner authorization. The technical content below describes the existing platform baseline and historical planned milestones; it does not authorize implementation. See `docs/PROJECT_STATUS.md` and `docs/DOCUMENTATION_INDEX.md` for the current gate.
+
 Plataforma geoespacial oficial da HYBRID, independente de provedores e reutilizável por todo o ecossistema.
 
 ## Objetivos
@@ -62,7 +65,9 @@ A aplicação consumidora não recebe nem precisa conhecer `MapLibre.Map`.
 - Micael Security
 - futuros produtos HYBRID
 
-## Próximos marcos
+## Marcos históricos planejados
+
+Os itens abaixo permanecem como referência histórica e serão revalidados no PRD/roadmap antes de qualquer retomada do desenvolvimento:
 
 1. Playground web com mapa do Rio de Janeiro.
 2. Eventos normalizados do provider para o EventBus do runtime.
@@ -70,6 +75,13 @@ A aplicação consumidora não recebe nem precisa conhecer `MapLibre.Map`.
 4. Pacote React.
 5. Integração inicial com o HYBRID Starlink Tracker.
 
-## Status
+## Status técnico anterior ao freeze
 
-Versão atual: `0.5.0-alpha.0` — provider MapLibre em desenvolvimento para o marco **HMP-0001 — First Running Map**.
+Versão registrada: `0.5.0-alpha.0` — provider MapLibre associado ao marco histórico **HMP-0001 — First Running Map**.
+
+## Status oficial atual
+
+Fase: documentação.  
+Gate: Documentation Freeze.  
+Desenvolvimento: bloqueado.  
+Próxima atividade permitida: completar a documentação de produto e arquitetura e executar o Development Readiness Gate.
