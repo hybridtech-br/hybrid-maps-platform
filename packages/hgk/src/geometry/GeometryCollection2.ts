@@ -1,14 +1,18 @@
 import { EPSILON } from '../precision/Precision.js';
+import { LinearRing2, type LinearRing2Json } from './LinearRing2.js';
 import { LineString2, type LineString2Json } from './LineString2.js';
 import { MultiLineString2, type MultiLineString2Json } from './MultiLineString2.js';
 import { MultiPoint2, type MultiPoint2Json } from './MultiPoint2.js';
 import { MultiPolygon2, type MultiPolygon2Json } from './MultiPolygon2.js';
 import { Point2, type Point2Json } from './Point2.js';
 import { Polygon2, type Polygon2Json } from './Polygon2.js';
+import { Segment2, type Segment2Json } from './Segment2.js';
 
 export type Geometry2 =
   | Point2
+  | Segment2
   | LineString2
+  | LinearRing2
   | Polygon2
   | MultiPoint2
   | MultiLineString2
@@ -17,7 +21,9 @@ export type Geometry2 =
 
 export type Geometry2Json =
   | Point2Json
+  | Segment2Json
   | LineString2Json
+  | LinearRing2Json
   | Polygon2Json
   | MultiPoint2Json
   | MultiLineString2Json
@@ -31,7 +37,9 @@ export interface GeometryCollection2Json {
 
 function geometryEquals(a: Geometry2, b: Geometry2): boolean {
   if (a instanceof Point2 && b instanceof Point2) return a.equals(b);
+  if (a instanceof Segment2 && b instanceof Segment2) return a.equals(b);
   if (a instanceof LineString2 && b instanceof LineString2) return a.equals(b);
+  if (a instanceof LinearRing2 && b instanceof LinearRing2) return a.equals(b);
   if (a instanceof Polygon2 && b instanceof Polygon2) return a.equals(b);
   if (a instanceof MultiPoint2 && b instanceof MultiPoint2) return a.equals(b);
   if (a instanceof MultiLineString2 && b instanceof MultiLineString2) return a.equals(b);
@@ -42,7 +50,9 @@ function geometryEquals(a: Geometry2, b: Geometry2): boolean {
 
 function geometryApproximatelyEquals(a: Geometry2, b: Geometry2, epsilon: number): boolean {
   if (a instanceof Point2 && b instanceof Point2) return a.approximatelyEquals(b, epsilon);
+  if (a instanceof Segment2 && b instanceof Segment2) return a.approximatelyEquals(b, epsilon);
   if (a instanceof LineString2 && b instanceof LineString2) return a.approximatelyEquals(b, epsilon);
+  if (a instanceof LinearRing2 && b instanceof LinearRing2) return a.approximatelyEquals(b, epsilon);
   if (a instanceof Polygon2 && b instanceof Polygon2) return a.approximatelyEquals(b, epsilon);
   if (a instanceof MultiPoint2 && b instanceof MultiPoint2) return a.approximatelyEquals(b, epsilon);
   if (a instanceof MultiLineString2 && b instanceof MultiLineString2) return a.approximatelyEquals(b, epsilon);
