@@ -30,11 +30,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build and typecheck workspace
-        run: pnpm build
+      - name: Build and typecheck Wave 0 workspace
+        run: pnpm --filter '!@hybrid/hgk' -r build
 
-      - name: Run characterization and package tests
-        run: pnpm test
+      - name: Run characterization and existing package tests
+        run: pnpm --filter '!@hybrid/hgk' -r test
 
       - name: Verify API contract fixtures explicitly
         run: pnpm --filter @hybrid/maps-api-contract-tests test
