@@ -15,12 +15,19 @@ interface WeightedCentroid {
   readonly weight: number;
 }
 
+interface CoordinateTotals {
+  readonly longitude: number;
+  readonly latitude: number;
+  readonly altitude: number;
+  readonly altitudeCount: number;
+}
+
 function averageCoordinates(coordinates: readonly Coordinate[]): Coordinate {
   if (coordinates.length === 0) {
     throw new Error('Centroid requires at least one coordinate.');
   }
 
-  const totals = coordinates.reduce(
+  const totals = coordinates.reduce<CoordinateTotals>(
     (result, coordinate) => ({
       longitude: result.longitude + coordinate.longitude,
       latitude: result.latitude + coordinate.latitude,
