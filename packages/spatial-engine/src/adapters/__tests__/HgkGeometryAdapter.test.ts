@@ -18,13 +18,13 @@ describe('HgkGeometryAdapter', () => {
     expect(line.points.map((point) => [point.x, point.y])).toEqual([[0, 0], [1, 1], [2, 1]]);
   });
 
-  it('adapts polygon shell and holes', () => {
+  it('adapts polygon outer ring and holes', () => {
     const polygon = geographicPolygonToHgkPolygon2(createPolygon([
       [c(0, 0), c(4, 0), c(4, 4), c(0, 4), c(0, 0)],
       [c(1, 1), c(2, 1), c(2, 2), c(1, 2), c(1, 1)],
     ]));
-    expect(polygon.shell.points).toHaveLength(5);
-    expect(polygon.holes).toHaveLength(1);
+    expect(polygon.outerRing()?.points).toHaveLength(5);
+    expect(polygon.holes()).toHaveLength(1);
   });
 
   it('rejects altitude-bearing geometry instead of silently losing altitude', () => {
