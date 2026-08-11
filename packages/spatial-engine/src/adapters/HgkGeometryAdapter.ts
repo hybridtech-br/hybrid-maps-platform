@@ -25,10 +25,8 @@ export function geographicLineStringToHgkLineString2(lineString: LineString): Li
 }
 
 export function geographicPolygonToHgkPolygon2(polygon: Polygon): Polygon2 {
-  const [shell, ...holes] = polygon.rings;
-  if (!shell) throw new Error('Polygon requires at least one ring.');
+  if (polygon.rings.length === 0) throw new Error('Polygon requires at least one ring.');
   return new Polygon2(
-    new LinearRing2(shell.map(coordinateToPoint2)),
-    holes.map((ring) => new LinearRing2(ring.map(coordinateToPoint2))),
+    polygon.rings.map((ring) => new LinearRing2(ring.map(coordinateToPoint2))),
   );
 }
