@@ -8,7 +8,18 @@ export class Coordinate {
   public readonly altitude?: number;
 
   public constructor(longitude: number, latitude: number, altitude?: number) {
-    const geographic = new GeographicCoordinate(longitude, latitude, altitude);
+    let geographic: GeographicCoordinate;
+    try {
+      geographic = new GeographicCoordinate(longitude, latitude, altitude);
+    } catch (error) {
+      if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+        throw new RangeError("Longitude must be between -180 and 180 degrees.");
+      }
+      if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
+        throw new RangeError("Latitude must be between -90 and 90 degrees.");
+      }
+      throw error;
+    }
     this.longitude = geographic.longitude;
     this.latitude = geographic.latitude;
     this.altitude = geographic.altitude;
@@ -37,6 +48,12 @@ export class BoundingBox {
   public readonly north: number;
 
   public constructor(west: number, south: number, east: number, north: number) {
+    // Preserve the public validation contract while delegating canonical geographic validation.
+    new Coordinate(west, south);
+    new Coordinate(east, north);
+    if (west > east || south > north) {
+      throw new RangeError("Bounding box minimum values must not exceed maximum values.");
+    }
     const geographic = new GeographicBounds(west, south, east, north);
     this.west = geographic.west;
     this.south = geographic.south;
