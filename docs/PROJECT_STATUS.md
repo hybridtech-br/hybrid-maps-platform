@@ -2,15 +2,15 @@
 
 Date: 2026-08-11
 Status: **AUTONOMOUS ROADMAP EXECUTION AUTHORIZED**
-Development: **AUTHORIZED SUBJECT TO ROADMAP GATES**
+Development: **ROADMAP MIGRATION WAVES COMPLETE; RELEASE HARDENING NEXT**
 
 ## Governing rule
 
-The project owner authorized autonomous execution of the remaining HYBRID Maps Platform roadmap. Technical decisions resolved by established architecture are recorded and executed without pausing. Stop only for an irreversible action, external cost, or genuine blocker.
+Autonomous execution remains authorized for reversible technical work. Stop only for an irreversible action, external cost, or genuine blocker.
 
 ## Product baseline
 
-V1 remains an internal provider-neutral SDK, MapLibre-first, without an HMP-hosted geospatial backend or HMP-owned location-history persistence. HYBRID Starlink Tracker is the first reference consumer. Geocoding, routing/navigation and offline maps remain post-V1.
+V1 is an internal provider-neutral SDK, MapLibre-first, without an HMP-hosted geospatial backend or HMP-owned location-history persistence. HYBRID Starlink Tracker is the first reference consumer. Geocoding, routing/navigation and offline maps remain post-V1.
 
 ## Roadmap state
 
@@ -19,45 +19,56 @@ V1 remains an internal provider-neutral SDK, MapLibre-first, without an HMP-host
 - Wave 2: **COMPLETE — CI GREEN**.
 - Wave 3: **COMPLETE — CI GREEN**.
 - Gate B: **PASSED**.
-- Wave 4 — Maps Core compatibility migration: **COMPLETE — CI GREEN**.
-- Wave 5 — consumer verification and deprecation preparation: **AUTHORIZED / NEXT**.
-- Gate C — deprecation: requires Wave 4 complete, all in-repository consumers green, migration guide and versioning decision.
+- Wave 4: **COMPLETE — CI GREEN**.
+- Wave 5 consumer verification: **COMPLETE — FULL REPOSITORY CI GREEN**.
+- M5.4 migration guide: **COMPLETE**.
+- Gate C deprecation: **PARTIALLY SATISFIED; REMOVALS HELD**.
+- M5.5: no public API removal performed because a major-version/removal decision is intentionally deferred.
+- Next: release hardening, documentation readiness, security/provider/license review and first external first-party consumer integration.
 
-## Wave 3 completion record
+## Wave 5 completion record
 
-M3.1–M3.5 completed: geographic coordinate/bounds wrappers, HGK coordinate/bounds and geometry adapters, geographic validation and ADR-003 separating planar/geographic centroid semantics. Final compatibility gate: commit `939758a960c6e90d9b9a270d9020c8f886c30266`, run `31534931539`, green.
+- Provider SDK builds against migrated Maps Core.
+- MapLibre provider builds against migrated Maps Core and Provider SDK.
+- Playground production build succeeds with the Rio de Janeiro reference scenario.
+- Pre-existing Runtime tests were aligned to the current Runtime contracts; no Runtime production API was changed.
+- A full repository quality workflow now builds all packages/apps and executes the actual test-bearing packages.
+- Full repository gate first passed on commit `1cbf4e6b71839211465ee0f3df704bfa99623bfa`, GitHub Actions run `31535778082`.
+- `guides/HGK_MIGRATION_GUIDE.md` documents package boundaries, coordinate/bounds/geometry migration, altitude policy, centroid semantics, provider compatibility and rollback.
 
-## Wave 4 completion record
+## CI-discovered hardening fixes
 
-Completed in roadmap order:
+The new full gate exposed two unrelated pre-existing repository issues and they were fixed before Wave 5 completion:
 
-- M4.1 Maps Core `Coordinate` delegates canonical geographic validation to Spatial Engine while preserving constructor, properties, freezing, exact equality, tuple conversion and characterized error messages;
-- M4.2 `BoundingBox` delegates canonical geographic bounds validation while preserving the existing public contract and validation messages;
-- M4.3 public `Geometry` shapes remain unchanged; internal `SpatialGeometryBridge` converts valid Point/LineString/Polygon structures for Spatial Engine use without leaking implementation types;
-- M4.4 `Viewport` required no implementation migration; characterization tests verify its public behavior;
-- M4.5 compile-time API fixtures, Provider SDK build and MapLibre build remain green; review recorded in `api/MAPS_CORE_WAVE4_API_REVIEW.md`.
+1. Runtime tests targeted obsolete API shapes (`status`, old capability registration and `ModuleRegistry`). Tests were updated to the existing production contracts (`isRunning`, provider-scoped capabilities and kernel registration).
+2. Playground used top-level `await`, incompatible with Vite's configured production targets. Initialization now runs inside an async bootstrap function; runtime behavior is unchanged.
 
-Wave 4 final gate: commit `4ef1efbbf2ecc5c96039e2b2d87a2a2a6637901b`, GitHub Actions run `31535283657`, green.
+Packages that declare a test script but contain no tests are not treated as passing test suites. The full gate explicitly runs the packages that actually contain tests while still building every workspace package/application.
 
-The gate caught a compatibility regression in the first delegation attempt: Spatial Engine validation messages leaked through Maps Core. The compatibility facade was corrected before Wave 4 completion.
+## Gate C assessment
 
-## Known technical debt
+Satisfied:
 
-- pre-existing Runtime test source does not compile against its implementation;
+- Wave 4 complete;
+- in-repository consumers build green;
+- full repository test-bearing packages green;
+- migration guide published;
+- compatibility facade remains available.
+
+Held intentionally:
+
+- removal or narrowing of legacy public APIs requires a major-version/product release decision and may affect consumers outside this repository. No such irreversible removal is necessary for V1 migration completion.
+
+Decision: keep compatibility APIs in the current alpha line; do not remove them. Deprecation annotations may be introduced only when a concrete replacement is unambiguous and external-consumer impact has been inventoried.
+
+## Known technical debt / release hardening
+
 - repository still lacks a committed `pnpm-lock.yaml`;
-- legacy Spatial Engine centroid behavior remains mixed and preserved per ADR-003;
-- simple `GeographicBounds` does not represent antimeridian crossing.
-
-## Current authorization
-
-Proceed with Wave 5 in order:
-
-- M5.1 verify Provider SDK;
-- M5.2 verify MapLibre provider;
-- M5.3 verify Playground using Rio de Janeiro as the reference scenario;
-- M5.4 publish migration guide;
-- evaluate Gate C and versioning;
-- M5.5 annotate only approved deprecations; no API removal without a major-version decision.
+- legacy Spatial Engine centroid behavior remains preserved per ADR-003;
+- simple `GeographicBounds` does not represent antimeridian crossing;
+- Playground production bundle warns that the main JavaScript chunk exceeds 500 kB; code splitting is a performance hardening item;
+- first-party Starlink Tracker integration is outside this repository and must be verified before declaring ecosystem rollout complete;
+- MapLibre style/data licensing, attribution and production tile-source policy require final release documentation.
 
 ## Visual identity rule
 
@@ -65,4 +76,4 @@ All first-party UI and visual documentation follow the approved HYBRID master id
 
 ## Next action
 
-Begin M5.1 with repository consumer verification, then MapLibre and Playground. Resolve pre-existing consumer blockers if they are necessary to satisfy the Wave 5 gate and can be fixed without breaking public contracts.
+Proceed autonomously with release hardening that is reversible and cost-free: documentation readiness audit, security/privacy boundaries, MapLibre provider/license matrix, bundle/reproducibility hardening where repository tooling permits, and release checklist. Stop before any external paid provider activation, production deployment, irreversible API removal or cross-repository Starlink Tracker modification that cannot be performed with available authorized access.
