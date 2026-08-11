@@ -30,7 +30,7 @@ describe("runtime primitives", () => {
   it("publishes typed events and unsubscribes", async () => {
     const bus = new EventBus<{ ready: { id: string } }>();
     const received: string[] = [];
-    const unsubscribe = bus.on("ready", ({ id }) => received.push(id));
+    const unsubscribe = bus.on("ready", ({ id }) => { received.push(id); });
     await bus.emit("ready", { id: "hmp" });
     unsubscribe();
     await bus.emit("ready", { id: "ignored" });
