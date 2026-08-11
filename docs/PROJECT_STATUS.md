@@ -6,80 +6,63 @@ Development: **AUTHORIZED SUBJECT TO ROADMAP GATES**
 
 ## Governing rule
 
-The project owner authorized autonomous execution of the remaining HYBRID Maps Platform roadmap. Technical decisions that can be resolved from established architecture and premises are to be recorded and executed without pausing. Work stops only for an irreversible action, external cost, or a genuine blocker that cannot be resolved autonomously.
+The project owner authorized autonomous execution of the remaining HYBRID Maps Platform roadmap. Technical decisions resolved by established architecture are recorded and executed without pausing. Stop only for an irreversible action, external cost, or genuine blocker.
 
-Roadmap order and acceptance gates remain mandatory.
+## Product baseline
 
-## Current product baseline
-
-- internal provider-neutral platform/SDK for first-party HYBRID products;
-- MapLibre is the initial production rendering provider;
-- no HYBRID-hosted geospatial backend required in V1;
-- HMP V1 does not persist user/location history;
-- HYBRID Starlink Tracker is the first integration/reference consumer;
-- geocoding, routing/navigation and offline maps are post-V1;
-- provider-neutral contracts, capability discovery, normalized events and HGK/Spatial Engine boundaries remain mandatory.
+V1 remains an internal provider-neutral SDK, MapLibre-first, without an HMP-hosted geospatial backend or HMP-owned location-history persistence. HYBRID Starlink Tracker is the first reference consumer. Geocoding, routing/navigation and offline maps remain post-V1.
 
 ## Roadmap state
 
-- Wave 0 — safety net and characterization: **COMPLETE — CI GREEN**.
-- Wave 1 — HGK mathematical foundation: **COMPLETE — CI GREEN**.
-- Wave 2 — HGK geometry and planar algorithms: **COMPLETE — CI GREEN**.
-- Wave 3 — Spatial Engine bridge and geographic semantics: **COMPLETE — CI GREEN**.
-- Gate B — begin Maps Core consumer migration: **OPEN**.
-- Wave 4 — Maps Core compatibility migration: **AUTHORIZED / NEXT**.
-- Wave 5 — consumers and deprecation: gated by Wave 4 and Gate C.
+- Wave 0: **COMPLETE — CI GREEN**.
+- Wave 1: **COMPLETE — CI GREEN**.
+- Wave 2: **COMPLETE — CI GREEN**.
+- Wave 3: **COMPLETE — CI GREEN**.
+- Gate B: **PASSED**.
+- Wave 4 — Maps Core compatibility migration: **COMPLETE — CI GREEN**.
+- Wave 5 — consumer verification and deprecation preparation: **AUTHORIZED / NEXT**.
+- Gate C — deprecation: requires Wave 4 complete, all in-repository consumers green, migration guide and versioning decision.
 
 ## Wave 3 completion record
 
+M3.1–M3.5 completed: geographic coordinate/bounds wrappers, HGK coordinate/bounds and geometry adapters, geographic validation and ADR-003 separating planar/geographic centroid semantics. Final compatibility gate: commit `939758a960c6e90d9b9a270d9020c8f886c30266`, run `31534931539`, green.
+
+## Wave 4 completion record
+
 Completed in roadmap order:
 
-- M3.1 immutable `GeographicCoordinate` with finite/range validation and optional altitude;
-- M3.2 immutable `GeographicBounds` with finite/range/order validation; simple bounds intentionally do not represent antimeridian crossing;
-- M3.3 one-way Spatial Engine dependency on `@hybrid/hgk`, coordinate/bounds adapters and round-trip tests; altitude-bearing coordinates are rejected before 2D adaptation to prevent silent data loss;
-- M3.4 point, line-string and polygon adapters into HGK geometry, preserving vertex/ring order and rejecting silent altitude loss;
-- M3.5 ADR-003 separates HGK planar centroid semantics from existing Spatial Engine geographic-domain centroid behavior;
-- additive `GeographicGeometryValidator` provides explicit longitude/latitude range validation without changing legacy constructor behavior.
+- M4.1 Maps Core `Coordinate` delegates canonical geographic validation to Spatial Engine while preserving constructor, properties, freezing, exact equality, tuple conversion and characterized error messages;
+- M4.2 `BoundingBox` delegates canonical geographic bounds validation while preserving the existing public contract and validation messages;
+- M4.3 public `Geometry` shapes remain unchanged; internal `SpatialGeometryBridge` converts valid Point/LineString/Polygon structures for Spatial Engine use without leaking implementation types;
+- M4.4 `Viewport` required no implementation migration; characterization tests verify its public behavior;
+- M4.5 compile-time API fixtures, Provider SDK build and MapLibre build remain green; review recorded in `api/MAPS_CORE_WAVE4_API_REVIEW.md`.
 
-Wave 3 final compatibility gate passed on commit `939758a960c6e90d9b9a270d9020c8f886c30266` (GitHub Actions run 31534931539).
+Wave 4 final gate: commit `4ef1efbbf2ecc5c96039e2b2d87a2a2a6637901b`, GitHub Actions run `31535283657`, green.
 
-A CI-discovered contract mismatch in the first polygon adapter implementation was corrected before the gate: `Polygon2` accepts a single ring array and exposes `outerRing()` / `holes()`, not constructor shell/hole parameters or properties. No HGK API was changed.
-
-## Gate B evidence
-
-- Waves 1–3 complete;
-- characterization tests green;
-- coordinate/bounds adapter round-trip tests green;
-- geometry adapter tests green;
-- HGK forbidden-dependency boundary remains enforced by the independent HGK workflow;
-- Spatial Engine depends on HGK in one direction only;
-- existing public Spatial Engine exports remain resolvable.
-
-Gate B is therefore open and Wave 4 may begin.
+The gate caught a compatibility regression in the first delegation attempt: Spatial Engine validation messages leaked through Maps Core. The compatibility facade was corrected before Wave 4 completion.
 
 ## Known technical debt
 
-- pre-existing Runtime test source does not compile against its implementation and remains outside the HGK migration critical path;
-- repository still lacks a committed `pnpm-lock.yaml`; migration CI currently installs without frozen lockfile;
-- existing Spatial Engine centroid implementation mixes geodesic segment weighting with planar longitude/latitude polygon formulas; ADR-003 preserves this characterized behavior during migration and reserves any geodesic redesign for a separately named future API;
-- simple `GeographicBounds` does not represent antimeridian-crossing bounds.
+- pre-existing Runtime test source does not compile against its implementation;
+- repository still lacks a committed `pnpm-lock.yaml`;
+- legacy Spatial Engine centroid behavior remains mixed and preserved per ADR-003;
+- simple `GeographicBounds` does not represent antimeridian crossing.
 
 ## Current authorization
 
-Authorized now, in order:
+Proceed with Wave 5 in order:
 
-- M4.1 migrate Maps Core Coordinate internals;
-- M4.2 migrate BoundingBox internals;
-- M4.3 migrate geometry conversion internals;
-- M4.4 verify Viewport;
-- M4.5 run public API comparison.
-
-Wave 4 must preserve Maps Core public signatures and provider-facing source shapes. HGK types must not leak into public provider contracts.
+- M5.1 verify Provider SDK;
+- M5.2 verify MapLibre provider;
+- M5.3 verify Playground using Rio de Janeiro as the reference scenario;
+- M5.4 publish migration guide;
+- evaluate Gate C and versioning;
+- M5.5 annotate only approved deprecations; no API removal without a major-version decision.
 
 ## Visual identity rule
 
-All first-party HYBRID Maps Platform UI and visual documentation follow the approved HYBRID master identity: black/dark graphite base, white/light gray, HYBRID green accent, corporate HYBRID mark/wordmark language, minimalist technological line iconography and consistent HYBRID typography/design language.
+All first-party UI and visual documentation follow the approved HYBRID master identity: black/dark graphite, white/light gray, HYBRID green accent, corporate mark/wordmark language, minimalist technological line iconography and consistent HYBRID typography/design language.
 
 ## Next action
 
-Execute Wave 4 in roadmap order, beginning with M4.1 Maps Core Coordinate internals while keeping characterization and API fixtures unchanged.
+Begin M5.1 with repository consumer verification, then MapLibre and Playground. Resolve pre-existing consumer blockers if they are necessary to satisfy the Wave 5 gate and can be fixed without breaking public contracts.
