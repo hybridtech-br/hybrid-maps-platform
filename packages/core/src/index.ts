@@ -1,3 +1,5 @@
+import { GeographicBounds, GeographicCoordinate } from '@hybrid/maps-spatial-engine';
+
 export type CoordinateInput = readonly [longitude: number, latitude: number, altitude?: number];
 
 export class Coordinate {
@@ -6,19 +8,10 @@ export class Coordinate {
   public readonly altitude?: number;
 
   public constructor(longitude: number, latitude: number, altitude?: number) {
-    if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
-      throw new RangeError("Longitude must be between -180 and 180 degrees.");
-    }
-    if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
-      throw new RangeError("Latitude must be between -90 and 90 degrees.");
-    }
-    if (altitude !== undefined && !Number.isFinite(altitude)) {
-      throw new RangeError("Altitude must be finite when provided.");
-    }
-
-    this.longitude = longitude;
-    this.latitude = latitude;
-    this.altitude = altitude;
+    const geographic = new GeographicCoordinate(longitude, latitude, altitude);
+    this.longitude = geographic.longitude;
+    this.latitude = geographic.latitude;
+    this.altitude = geographic.altitude;
     Object.freeze(this);
   }
 
@@ -44,15 +37,11 @@ export class BoundingBox {
   public readonly north: number;
 
   public constructor(west: number, south: number, east: number, north: number) {
-    const southWest = new Coordinate(west, south);
-    const northEast = new Coordinate(east, north);
-    if (southWest.longitude > northEast.longitude || southWest.latitude > northEast.latitude) {
-      throw new RangeError("Bounding box minimum values must not exceed maximum values.");
-    }
-    this.west = west;
-    this.south = south;
-    this.east = east;
-    this.north = north;
+    const geographic = new GeographicBounds(west, south, east, north);
+    this.west = geographic.west;
+    this.south = geographic.south;
+    this.east = geographic.east;
+    this.north = geographic.north;
     Object.freeze(this);
   }
 
