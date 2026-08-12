@@ -1,0 +1,40 @@
+name: Publish V1.0.0
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.repository == 'hybridtech-br/hybrid-maps-platform'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify release version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          test "$VERSION" = "1.0.0"
+      - name: Publish GitHub release once
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            echo "v1.0.0 release already exists."
+            exit 0
+          fi
+          git config user.name "HYBRID Release Bot"
+          git config user.email "contato@hybridtech.com.br"
+          git tag -a v1.0.0 -m "HYBRID Maps Platform v1.0.0" "$GITHUB_SHA"
+          git push origin v1.0.0
+          gh release create v1.0.0 \
+            --verify-tag \
+            --title "HYBRID Maps Platform v1.0.0" \
+            --notes-file docs/release/V1_0_0_RELEASE_NOTES.md
