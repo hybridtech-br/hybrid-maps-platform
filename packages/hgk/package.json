@@ -1,6 +1,6 @@
 {
   "name": "@hybrid/hgk",
-  "version": "0.1.0-alpha.0",
+  "version": "1.0.0",
   "description": "HYBRID Geometry Kernel: reusable mathematical and geometric foundation for HYBRID products.",
   "type": "module",
   "main": "./dist/index.js",
