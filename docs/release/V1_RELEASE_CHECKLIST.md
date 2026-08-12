@@ -26,7 +26,7 @@ V1.0.0 is the first stable **source/engineering release** of the HYBRID Maps Pla
 - [x] Playground MapLibre provider changed to lazy dynamic loading to split provider JavaScript from the initial application module.
 - [x] Package/workspace versions promoted to `1.0.0`.
 - [x] Changelog prepared for `1.0.0`.
-- [x] Final release-candidate checks green on head `b6261be9112d51dc0aa93f19ec22c6d7dc44ab1c`.
+- [x] Final release-candidate checks green on the release branch head immediately before merge.
 - [ ] PR #4 merged to `main`.
 - [ ] `v1.0.0` tag/GitHub Release verified.
 
