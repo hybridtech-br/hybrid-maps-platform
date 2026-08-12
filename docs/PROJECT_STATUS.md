@@ -57,4 +57,4 @@ The official HYBRID Maps Platform identity supplied by the project owner is the 
 
 ## Final action
 
-PR #4 is authorized for merge. After merge, verify `main` quality gates and the automated `v1.0.0` GitHub Release. Do not alter the release branch before merge.
+PR #4 is authorized for merge. After merge, verify `main` quality gates and the automated `v1.0.0` GitHub Release.
