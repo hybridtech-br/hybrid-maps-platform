@@ -1,8 +1,8 @@
 # HYBRID Maps Platform — Project Status
 
 Date: 2026-08-12
-Status: **V1.0.0 RELEASE CANDIDATE**
-Development: **ROADMAP WAVES 0–5 COMPLETE; FINAL RELEASE GATE ACTIVE**
+Status: **V1.0.0 RELEASE CANDIDATE — FINAL CI GREEN**
+Development: **ROADMAP WAVES 0–5 COMPLETE; MERGE AUTHORIZED**
 
 ## Product baseline
 
@@ -16,10 +16,11 @@ V1.0.0 is the first stable source/engineering release of the provider-neutral HY
 - Wave 3: **COMPLETE — CI GREEN**.
 - Gate B: **PASSED**.
 - Wave 4: **COMPLETE — CI GREEN**.
-- Wave 5: **COMPLETE — FULL REPOSITORY VERIFICATION ESTABLISHED**.
+- Wave 5: **COMPLETE — CI GREEN**.
 - Gate C: compatibility kept; no legacy public API removal in V1.0.0.
-- Release hardening: **COMPLETE IN SOURCE**.
-- Final gate: exact-head CI, merge of PR #4 and verification of `v1.0.0` release.
+- Release hardening: **COMPLETE**.
+- Final exact-head release checks: **GREEN**.
+- Next: merge PR #4 to `main`; repository workflow publishes `v1.0.0`.
 
 ## V1.0 release hardening completed
 
@@ -30,8 +31,9 @@ V1.0.0 is the first stable source/engineering release of the provider-neutral HY
 - Playground dynamically loads the MapLibre provider to isolate provider JavaScript from the initial application module;
 - official Maps Platform visual identity is applied to the Playground;
 - `CHANGELOG.md` contains the 1.0.0 release record;
-- README now documents V1 architecture, setup, scope, Playground and source-release semantics;
-- release checklist distinguishes source release from production deployment/consumer rollout.
+- README documents V1 architecture, setup, scope, Playground and source-release semantics;
+- release checklist distinguishes source release from production deployment/consumer rollout;
+- GitHub release notes and idempotent `v1.0.0` publication workflow are committed.
 
 ## Compatibility
 
@@ -55,4 +57,4 @@ The official HYBRID Maps Platform identity supplied by the project owner is the 
 
 ## Final action
 
-Run all release-candidate checks on the exact branch head. If all required checks are green, merge PR #4 into `main`, create/verify tag `v1.0.0`, publish the GitHub Release and then mark this document as **V1.0.0 RELEASED**.
+PR #4 is authorized for merge. After merge, verify `main` quality gates and the automated `v1.0.0` GitHub Release. Do not alter the release branch before merge.
