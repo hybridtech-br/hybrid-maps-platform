@@ -1,7 +1,7 @@
 # HYBRID Maps Platform — V1.0 Release Checklist
 
 Date: 2026-08-12
-Status: **SOURCE RELEASE READY — FINAL CI/MERGE PENDING**
+Status: **SOURCE RELEASE READY — CI GREEN**
 
 ## Release definition
 
@@ -17,7 +17,7 @@ V1.0.0 is the first stable **source/engineering release** of the HYBRID Maps Pla
 - [x] Wave 5 in-repository consumer verification green.
 - [x] Provider SDK and MapLibre build green.
 - [x] Playground production build green.
-- [x] Full repository build/test gate established.
+- [x] Full repository build/test gate green.
 - [x] Migration guide published.
 - [x] Security/privacy boundaries documented.
 - [x] MapLibre V1 provider matrix documented.
@@ -26,7 +26,7 @@ V1.0.0 is the first stable **source/engineering release** of the HYBRID Maps Pla
 - [x] Playground MapLibre provider changed to lazy dynamic loading to split provider JavaScript from the initial application module.
 - [x] Package/workspace versions promoted to `1.0.0`.
 - [x] Changelog prepared for `1.0.0`.
-- [ ] Final release-candidate checks green on the exact merge head.
+- [x] Final release-candidate checks green on head `b6261be9112d51dc0aa93f19ec22c6d7dc44ab1c`.
 - [ ] PR #4 merged to `main`.
 - [ ] `v1.0.0` tag/GitHub Release verified.
 
@@ -82,4 +82,4 @@ These require a concrete deployment/consumer context and may create external cos
 
 ## Release decision
 
-The V1.0.0 codebase is eligible for stable source release after the final exact-head CI gate passes. Once green, PR #4 may be merged and `v1.0.0` published. Production rollout remains a subsequent, independent operational gate.
+The V1.0.0 codebase passed the final exact-head CI gate and is approved for merge of PR #4. After merge, the repository release workflow must create and verify `v1.0.0`. Production rollout remains a subsequent, independent operational gate.
