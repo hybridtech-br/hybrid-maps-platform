@@ -1,7 +1,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.css";
 import { Coordinate, Viewport } from "@hybrid/maps-core";
-import { createMapLibreProvider } from "@hybrid/maps-provider-maplibre";
 import { PROVIDER_CAPABILITIES, ProviderRegistry } from "@hybrid/maps-provider-sdk";
 
 const RIO_CENTER = new Coordinate(-43.1729, -22.9068);
@@ -43,7 +42,10 @@ async function bootstrap(): Promise<void> {
   }
 
   const registry = new ProviderRegistry();
-  registry.register("maplibre", () => createMapLibreProvider());
+  registry.register("maplibre", async () => {
+    const { createMapLibreProvider } = await import("@hybrid/maps-provider-maplibre");
+    return createMapLibreProvider();
+  });
   logEvent("Provider registrado");
 
   const provider = await registry.resolve("maplibre");
