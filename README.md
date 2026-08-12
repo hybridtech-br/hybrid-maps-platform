@@ -1,38 +1,39 @@
 # HYBRID Maps Platform
 
-> **DOCUMENTATION FREEZE — ACTIVE (2026-08-10)**  
-> Development, automated software-test implementation, production CI/CD, homologation and deployment are blocked until explicit project-owner authorization. The technical content below describes the existing platform baseline and historical planned milestones; it does not authorize implementation. See `docs/PROJECT_STATUS.md` and `docs/DOCUMENTATION_INDEX.md` for the current gate.
+**Version 1.0.0 — source/engineering release**
 
-Plataforma geoespacial oficial da HYBRID, independente de provedores e reutilizável por todo o ecossistema.
+Plataforma geoespacial oficial da HYBRID Tecnologia Inteligente, provider-neutral e reutilizável pelos produtos do ecossistema HYBRID.
 
-## Objetivos
+## V1.0
 
-- API única para MapLibre, OpenStreetMap, Google Maps, HERE e futuros provedores.
-- Arquitetura modular baseada em microkernel e capacidades.
-- SDKs reutilizáveis e serviços geoespaciais independentes.
-- Testes, documentação, Docker, CI/CD e versionamento semântico.
+A V1.0 consolida a arquitetura em camadas:
 
-## Pacotes atuais
+- `@hybrid/hgk` — kernel matemático e geométrico 2D, sem semântica terrestre, provider, DOM ou browser;
+- `@hybrid/maps-spatial-engine` — coordenadas e bounds geográficos, validação, medições geográficas e adapters para HGK;
+- `@hybrid/maps-core` — contratos estáveis de mapas, `Coordinate`, `BoundingBox`, `Viewport`, projeções e geometrias provider-neutral;
+- `@hybrid/maps-runtime` — microkernel, ciclo de vida, eventos, serviços, módulos e capacidades;
+- `@hybrid/maps-provider-sdk` — contratos, capacidades e registro lazy de providers;
+- `@hybrid/maps-provider-maplibre` — provider MapLibre para renderização, câmera, layers, markers, popups e controles;
+- `@hybrid/maps-feature-store`, `@hybrid/maps-events` e `@hybrid/maps-theme-manager` — infraestrutura complementar da plataforma;
+- `apps/playground` — referência executável da V1 com cenário do Rio de Janeiro e identidade visual oficial HYBRID Maps Platform.
 
-- `@hybrid/maps-core`: domínio geoespacial, coordenadas, bounding boxes, viewport, CRS, projeções e geometrias.
-- `@hybrid/maps-runtime`: microkernel, ciclo de vida, eventos, serviços, módulos e capacidades.
-- `@hybrid/maps-provider-sdk`: contratos, adapters, capacidades e registro lazy de providers.
-- `@hybrid/maps-provider-maplibre`: provider MapLibre encapsulado para renderização, câmera, layers, markers, popups e controles.
+## Princípios
 
-## Runtime microkernel
+- Provider neutrality: consumidores usam contratos HMP, não objetos concretos do MapLibre.
+- Separação de domínio: HGK é planar; Spatial Engine concentra semântica geográfica.
+- Compatibilidade: a migração para HGK não remove APIs públicas legadas do Maps Core.
+- Privacidade por minimização: a V1 não cria datastore próprio de histórico de localização.
+- Reprodutibilidade: `pnpm-lock.yaml` é versionado e os principais gates usam instalação `--frozen-lockfile`.
 
-O pacote `@hybrid/maps-runtime` orquestra módulos por um ciclo de vida determinístico e permite descoberta de capacidades sem expor APIs específicas de provedores.
+## Requisitos de desenvolvimento
 
-```ts
-import { HmpKernel } from "@hybrid/maps-runtime";
+- Node.js 22
+- pnpm 9.15.0
 
-const kernel = new HmpKernel({ provider: "auto", locale: "pt-BR" });
-kernel.register(mapLibreModule);
-await kernel.start();
-
-if (kernel.hasCapability("rendering")) {
-  // O consumidor pode criar o mapa sem conhecer o provider.
-}
+```bash
+pnpm install --frozen-lockfile
+pnpm build
+pnpm test
 ```
 
 ## Primeiro mapa com MapLibre
@@ -40,10 +41,12 @@ if (kernel.hasCapability("rendering")) {
 ```ts
 import { Viewport } from "@hybrid/maps-core";
 import { ProviderRegistry } from "@hybrid/maps-provider-sdk";
-import { createMapLibreProvider } from "@hybrid/maps-provider-maplibre";
 
 const providers = new ProviderRegistry();
-providers.register("maplibre", () => createMapLibreProvider());
+providers.register("maplibre", async () => {
+  const { createMapLibreProvider } = await import("@hybrid/maps-provider-maplibre");
+  return createMapLibreProvider();
+});
 
 const provider = await providers.resolve("maplibre");
 const map = await provider.createMap({
@@ -57,31 +60,54 @@ const map = await provider.createMap({
 
 A aplicação consumidora não recebe nem precisa conhecer `MapLibre.Map`.
 
-## Consumidores previstos
+## Playground
 
-- HYBRID Starlink Tracker
-- HYBRID Monitor
-- HYBRID Home Assistant
-- Micael Security
-- futuros produtos HYBRID
+```bash
+pnpm --filter @hybrid/maps-playground dev
+```
 
-## Marcos históricos planejados
+O cenário de referência usa o Rio de Janeiro e MapLibre. O style `demotiles.maplibre.org` é utilizado somente para demonstração/desenvolvimento; a escolha de tiles/style de produção pertence ao deployment de cada consumidor e não faz parte do source release V1.0.
 
-Os itens abaixo permanecem como referência histórica e serão revalidados no PRD/roadmap antes de qualquer retomada do desenvolvimento:
+## Escopo V1
 
-1. Playground web com mapa do Rio de Janeiro.
-2. Eventos normalizados do provider para o EventBus do runtime.
-3. API pública `HybridMaps`.
-4. Pacote React.
-5. Integração inicial com o HYBRID Starlink Tracker.
+Incluído:
 
-## Status técnico anterior ao freeze
+- mapa provider-neutral;
+- MapLibre como provider inicial;
+- viewport/câmera;
+- layers;
+- markers;
+- popups;
+- controls;
+- capacidades do provider;
+- HGK e Spatial Engine;
+- APIs TypeScript e fixtures de compatibilidade;
+- CI de qualidade e limites arquiteturais;
+- documentação de migração, segurança e provider.
 
-Versão registrada: `0.5.0-alpha.0` — provider MapLibre associado ao marco histórico **HMP-0001 — First Running Map**.
+Pós-V1:
 
-## Status oficial atual
+- geocoding/reverse geocoding;
+- routing/navigation;
+- offline map packs;
+- providers adicionais de produção;
+- backend geoespacial hospedado pela HMP.
 
-Fase: documentação.  
-Gate: Documentation Freeze.  
-Desenvolvimento: bloqueado.  
-Próxima atividade permitida: completar a documentação de produto e arquitetura e executar o Development Readiness Gate.
+## Consumidores de referência
+
+O HYBRID Starlink Tracker é o primeiro consumidor de integração planejado. HYBRID Monitor, HYBRID Home Assistant, Micael Security e outros produtos podem consumir a plataforma preservando os limites de autenticação, dados e infraestrutura definidos por cada produto.
+
+## Compatibilidade e migração
+
+Consulte:
+
+- `docs/guides/HGK_MIGRATION_GUIDE.md`
+- `docs/api/HGK_API.md`
+- `docs/api/MAPS_CORE_WAVE4_API_REVIEW.md`
+- `docs/security/SECURITY_PRIVACY_BOUNDARIES.md`
+- `docs/providers/MAPLIBRE_V1_MATRIX.md`
+- `docs/release/V1_RELEASE_CHECKLIST.md`
+
+## Estado da release
+
+As Waves 0–5 da migração HGK foram concluídas com gates de build, testes e compatibilidade. A V1.0 é a primeira release estável do código-fonte/SDK. Deployments em produção, contratação de serviços de tiles e integração em repositórios externos são etapas de rollout separadas e não alteram a condição desta source release.
