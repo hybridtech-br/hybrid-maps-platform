@@ -1,11 +1,11 @@
 # HYBRID Maps Platform — Documentation Index
 
-Status: **V1.0 COMPLETE — OFFICIAL SOURCE OF TRUTH**
+Status: **V1.0.0 RELEASED — OFFICIAL SOURCE OF TRUTH**
 Date: 2026-08-14
 
 ## Governance
 
-The former Documentation Freeze was explicitly released by the project owner. V1.0 engineering Waves 0–5 and release hardening are complete. This index is now the canonical map of V1.0 documentation.
+V1.0 engineering Waves 0–5, release hardening, merge to `main` and publication of `v1.0.0` are complete. This index is the canonical map of the V1.0.0 documentation baseline and the entrypoint for post-V1 evolution.
 
 ## Authority order
 
@@ -23,8 +23,8 @@ The former Documentation Freeze was explicitly released by the project owner. V1
 | ID | Document | Status |
 |---|---|---|
 | BOOK-01 | `docs/MAPS_PLATFORM_BOOK.md` | Approved V1.0 |
-| GOV-01 | `docs/DOCUMENTATION_INDEX.md` | Approved V1.0 |
-| GOV-02 | `docs/PROJECT_STATUS.md` | Approved release status |
+| GOV-01 | `docs/DOCUMENTATION_INDEX.md` | Approved V1.0.0 |
+| GOV-02 | `docs/PROJECT_STATUS.md` | V1.0.0 released / post-V1 open |
 | GOV-HIST | `docs/HGK_DOCUMENTATION_FREEZE_AUDIT.md` | Historical audit |
 
 ## Product
@@ -35,7 +35,8 @@ The former Documentation Freeze was explicitly released by the project owner. V1
 | REQ-01 | `docs/product/FUNCTIONAL_REQUIREMENTS.md` | Approved V1.0 |
 | NFR-01 | `docs/product/NON_FUNCTIONAL_REQUIREMENTS.md` | Approved V1.0 |
 | RISK-01 | `docs/product/RISK_REGISTER.md` | Approved V1.0 |
-| ROAD-01 | `docs/product/V1_ROADMAP.md` | Approved V1.0/post-V1 |
+| ROAD-01 | `docs/product/V1_ROADMAP.md` | Executed V1 roadmap |
+| ROAD-02 | `docs/product/POST_V1_ROADMAP.md` | Active post-V1 roadmap |
 
 ## Architecture
 
@@ -95,11 +96,16 @@ The former Documentation Freeze was explicitly released by the project owner. V1
 
 | ID | Document | Status |
 |---|---|---|
-| READY-01 | `docs/release/V1_DEVELOPMENT_READINESS.md` | READY |
-| REL-CHK | `docs/release/V1_RELEASE_CHECKLIST.md` | Source release ready; merge/tag verification pending |
-| REL-NOTES | `docs/release/V1_0_0_RELEASE_NOTES.md` | Prepared |
-| CHANGELOG | `CHANGELOG.md` | V1.0 recorded |
+| READY-01 | `docs/release/V1_DEVELOPMENT_READINESS.md` | Historical readiness gate passed |
+| REL-CHK | `docs/release/V1_RELEASE_CHECKLIST.md` | V1 source release completed |
+| REL-NOTES | `docs/release/V1_0_0_RELEASE_NOTES.md` | Published baseline |
+| CHANGELOG | `CHANGELOG.md` | V1.0.0 recorded |
+| GITHUB-REL | GitHub Release `v1.0.0` | Published 2026-08-14 |
 
-## Documentation completion gate
+## V1.0.0 completion gate
 
-The V1.0 documentation set is complete for the source/engineering release. No missing document blocks merge or publication. Production hosting, commercial tile/style selection and consumer-specific rollout documentation become required only when a concrete production deployment is authorized.
+The V1.0.0 source/engineering release is complete and published. No V1 documentation or engineering task remains open in this repository.
+
+## Post-V1 gate
+
+Post-V1 work begins with the first real first-party consumer integration in HYBRID Starlink Tracker. Production hosting, commercial tile/style selection, additional providers and new capabilities are handled by `docs/product/POST_V1_ROADMAP.md` and require their own gates.

@@ -1,58 +1,77 @@
 # HYBRID Maps Platform — Project Status
 
 Date: 2026-08-14
-Status: **V1.0.0 RELEASE CANDIDATE — DOCUMENTATION COMPLETE**
-Development: **ROADMAP WAVES 0–5 COMPLETE; MERGE AUTHORIZED AFTER FINAL EXACT-HEAD CI**
+Status: **V1.0.0 RELEASED — SOURCE/ENGINEERING BASELINE COMPLETE**
+Development: **POST-V1 CYCLE OPEN**
+
+## V1.0.0 release record
+
+HYBRID Maps Platform v1.0.0 is the first stable source/engineering release of the provider-neutral HYBRID Maps Platform SDK.
+
+Verified release facts:
+
+- PR #4 merged into `main` on 2026-08-14;
+- merge commit: `dd59e28a366cfc71018e85082c129a230c707529`;
+- `Validate Repository` passed on `main`;
+- `HGK Foundation Gates` passed on `main`;
+- `Full Repository Quality` passed on `main`;
+- `Publish V1.0.0` completed successfully;
+- GitHub Release `v1.0.0` is published, non-draft and non-prerelease.
 
 ## Product baseline
 
-V1.0.0 is the first stable source/engineering release of the provider-neutral HYBRID Maps Platform SDK. MapLibre is the initial rendering provider. HMP V1 does not require a HYBRID-hosted geospatial backend and does not persist user/location history. HYBRID Starlink Tracker is the first intended first-party reference consumer. Geocoding, routing/navigation and offline maps remain post-V1.
+V1.0.0 is a provider-neutral SDK for first-party HYBRID products. MapLibre is the initial rendering provider. HMP V1 does not require a HYBRID-hosted geospatial backend and does not persist user/location history.
 
-## Roadmap state
+HYBRID Starlink Tracker remains the first intended first-party integration/reference consumer.
 
-- Waves 0–5: **COMPLETE**.
+Geocoding, routing/navigation, offline maps and additional production providers remain post-V1 capabilities unless reprioritized explicitly.
+
+## Completed roadmap
+
+- Wave 0 — characterization/API safety net: **COMPLETE**.
+- Wave 1 — HGK mathematical foundation: **COMPLETE**.
+- Wave 2 — HGK geometry/planar algorithms: **COMPLETE**.
+- Wave 3 — Spatial Engine bridge/geographic semantics: **COMPLETE**.
 - Gate B: **PASSED**.
+- Wave 4 — Maps Core compatibility migration: **COMPLETE**.
+- Wave 5 — consumer verification/migration guide: **COMPLETE**.
 - Gate C: compatibility retained; no legacy public API removal in V1.0.0.
 - Release hardening: **COMPLETE**.
 - V1.0 documentation consolidation: **COMPLETE**.
-- Final action: exact-head CI → merge PR #4 → verify `main` and automated `v1.0.0` release.
+- V1.0.0 source release: **PUBLISHED**.
 
-## V1.0 engineering hardening
+## Compatibility baseline
 
-- workspace and releasable packages at version `1.0.0`;
-- `pnpm-lock.yaml` committed using pnpm 9.15.0;
-- principal quality workflows use frozen lockfile installation;
-- build/test/API compatibility/HGK-boundary/CodeQL workflows exist;
-- Playground lazy-loads MapLibre provider code;
-- official Maps Platform identity is applied to the Playground;
-- changelog, release notes and automated V1 release workflow are committed.
+No Maps Core legacy public API was removed in V1.0.0. HGK remains isolated behind Spatial Engine/Maps Core boundaries, and provider-neutral contracts remain compatible with Provider SDK and MapLibre.
 
-## V1.0 documentation gate
-
-Canonical documentation now includes the official Maps Platform Book, documentation index, PRD, functional and non-functional requirements, HGK architecture/migration/API inventory, data architecture, infrastructure/deployment architecture, API/integration architecture, provider/dependency matrices, threat model, security/privacy boundaries, LGPD specification, visual identity/UX specification, accessibility, operations/recovery, test/CI specifications, ADR index, risk register, product roadmap, installation/development guide, migration guide, readiness report, release checklist and release notes.
-
-No documentation gap blocks the V1.0 source release.
-
-## Compatibility
-
-No Maps Core legacy public API is removed. HGK types remain behind Spatial Engine/Maps Core boundaries and the provider-facing API remains compatible with Provider SDK and MapLibre fixtures.
-
-## Known limitations accepted for V1
+## Accepted V1 limitations
 
 - simple `GeographicBounds` does not model antimeridian-crossing bounds;
 - legacy Spatial Engine centroid behavior remains characterized and documented by ADR-003;
 - geocoding, routing/navigation and offline maps are post-V1;
 - Playground development style uses `demotiles.maplibre.org`; production tile/style selection is deployment-specific;
-- Starlink Tracker integration is a subsequent ecosystem rollout step in its separate repository.
+- Starlink Tracker rollout occurs in its separate repository/product lifecycle.
+
+## Post-V1 priorities
+
+The canonical post-V1 sequence is defined in `docs/product/POST_V1_ROADMAP.md`.
+
+Initial order:
+
+1. integrate HMP v1.0.0 into HYBRID Starlink Tracker as the first real first-party consumer;
+2. validate provider/runtime behavior in that consumer and capture gaps;
+3. establish production tile/style/data-source policy when an actual deployment target exists;
+4. address V1 technical debt with compatibility-preserving changes;
+5. evaluate geocoding, routing/navigation, offline support and additional providers only after first-consumer evidence.
 
 ## Release interpretation
 
-V1.0 is a source/engineering release, not automatic production deployment. A real deployment still requires target-specific decisions for hosting, tiles/style, licenses/attribution, CSP, observability, credentials/origin restrictions and rollback.
+V1.0.0 is a stable source/engineering release, not an automatic public hosted service. Any production deployment still requires target-specific decisions for hosting, style/tiles/data provider, licenses/attribution, CSP, observability, credentials/origin restrictions and rollback.
 
 ## Visual identity
 
-The official HYBRID Maps Platform identity supplied by the project owner is canonical. Palette: `#0D1117`, `#1B2128`, `#2E343B`, `#22C55E`, `#F5F7FA`; Exo 2 for titles/highlights and Inter for body/UI, with minimalist topographic/geospatial graphic language.
+The official HYBRID Maps Platform identity supplied by the project owner remains canonical. Palette: `#0D1117`, `#1B2128`, `#2E343B`, `#22C55E`, `#F5F7FA`; Exo 2 for titles/highlights and Inter for body/UI, with minimalist topographic/geospatial language.
 
-## Final action
+## Current gate
 
-Run all required checks on this exact documentation head. If green, merge PR #4 to `main` and verify the repository-created `v1.0.0` tag/GitHub Release.
+The Maps Platform repository itself is no longer blocked by V1 engineering work. The next product gate is **First Consumer Integration**: verify HMP v1.0.0 inside HYBRID Starlink Tracker without changing Maps Platform public contracts unless evidence from the integration justifies a compatible post-V1 evolution.
