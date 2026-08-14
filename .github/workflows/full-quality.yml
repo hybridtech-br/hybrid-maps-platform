@@ -1,0 +1,31 @@
+name: Full Repository Quality
+
+on:
+  push:
+    branches: [main, develop, feat/hgk-foundation]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  full-quality:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build all packages and applications
+        run: pnpm -r build
+      - name: Test repository packages with test suites
+        run: |
+          pnpm --filter @hybrid/hgk test
+          pnpm --filter @hybrid/maps-spatial-engine test
+          pnpm --filter @hybrid/maps-core test
+          pnpm --filter @hybrid/maps-runtime test

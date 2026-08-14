@@ -1,0 +1,61 @@
+name: HGK Foundation Gates
+
+on:
+  push:
+    paths:
+      - 'packages/hgk/**'
+      - 'docs/api/HGK_API.md'
+      - 'docs/testing/HGK_NUMERICAL_VALIDATION.md'
+      - '.github/workflows/hgk-foundation.yml'
+  pull_request:
+    paths:
+      - 'packages/hgk/**'
+      - 'docs/api/HGK_API.md'
+      - 'docs/testing/HGK_NUMERICAL_VALIDATION.md'
+      - '.github/workflows/hgk-foundation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  hgk-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build HGK independently
+        run: pnpm --filter @hybrid/hgk build
+
+      - name: Test HGK
+        run: pnpm --filter @hybrid/hgk test
+
+      - name: Enforce HGK dependency boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE "from .*['\"]([^'\"]*/)?(maps-core|spatial-engine|provider|maplibre|geojson|crs|epsg)" packages/hgk/src; then
+            echo "Forbidden HGK dependency detected."
+            exit 1
+          fi
+          if grep -RInE "import\(.*['\"]([^'\"]*/)?(maps-core|spatial-engine|provider|maplibre|geojson|crs|epsg)" packages/hgk/src; then
+            echo "Forbidden dynamic HGK dependency detected."
+            exit 1
+          fi
