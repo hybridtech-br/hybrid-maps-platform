@@ -1,101 +1,105 @@
 # HYBRID Maps Platform — Documentation Index
 
-Status: Official documentation source-of-truth index
-Date: 2026-08-10
+Status: **V1.0 COMPLETE — OFFICIAL SOURCE OF TRUTH**
+Date: 2026-08-14
 
 ## Governance
 
-The project is under **Documentation Freeze**. Documentation work is authorized; software implementation, automated software test creation, production CI/CD implementation, homologation and deployment are blocked until explicit owner authorization.
-
-## Status vocabulary
-
-- `Approved baseline`: accepted as the current technical baseline, subject to later documented supersession.
-- `Draft`: incomplete and not sufficient to authorize implementation.
-- `Planned`: required document not yet produced.
-- `Superseded`: retained for history but no longer authoritative.
-- `Blocked`: cannot be finalized without an owner/product decision.
-
-## Terminology correction
-
-The term **Migration Wave 0** is reserved for the executable safety-net phase defined in `HGK_MIGRATION_PLAN.md` (characterization tests, API fixtures and CI integration).
-
-The five documents under `docs/testing/` that were previously described conversationally as Wave 0.1–0.5 are **documentation specifications**, not executable migration waves. Their canonical classification is now **Documentation Test Specifications DTS-01 through DTS-05**.
-
-No executable Migration Wave 0 work is authorized while Documentation Freeze is active.
-
-## Official documents
-
-### Governance
-
-| ID | Document | Status |
-|---|---|---|
-| GOV-01 | `docs/DOCUMENTATION_INDEX.md` | Approved baseline |
-| GOV-02 | `docs/HGK_DOCUMENTATION_FREEZE_AUDIT.md` | Approved baseline |
-| GOV-03 | `docs/PROJECT_STATUS.md` | Approved baseline |
-
-### HGK architecture
-
-| ID | Document | Status |
-|---|---|---|
-| ARC-01 | `docs/architecture/HGK_ARCHITECTURE_BOOK.md` | Approved baseline |
-| ARC-02 | `docs/architecture/HGK_COMPONENT_INVENTORY.md` | Approved baseline |
-| ARC-03 | `docs/architecture/HGK_PUBLIC_API_INVENTORY.md` | Approved baseline |
-| ARC-04 | `docs/architecture/HGK_DEPENDENCY_MAP.md` | Approved baseline |
-| ARC-05 | `docs/architecture/HGK_MIGRATION_PLAN.md` | Approved baseline; execution suspended by Documentation Freeze |
-
-### Test and quality specifications
-
-| ID | Document | Canonical classification | Status |
-|---|---|---|---|
-| DTS-01 | `docs/testing/HGK_CHARACTERIZATION_TEST_SPEC.md` | Documentation specification | Approved baseline; implementation blocked |
-| DTS-02 | `docs/testing/HGK_API_COMPATIBILITY_SPEC.md` | Documentation specification | Approved baseline; implementation blocked |
-| DTS-03 | `docs/testing/HGK_NUMERICAL_VALIDATION.md` | Documentation specification | Approved baseline |
-| DTS-04 | `docs/testing/HGK_OFFICIAL_TEST_DATASET.md` | Documentation specification | Approved baseline; dataset implementation blocked |
-| DTS-05 | `docs/testing/HGK_CI_TEST_MATRIX.md` | Future CI specification | Approved baseline; pipeline implementation blocked |
-
-## Required product-level documents
-
-| ID | Document | Status |
-|---|---|---|
-| PRD-01 | Maps Platform Product Requirements Document | Planned |
-| REQ-01 | Functional Requirements Catalog | Planned |
-| NFR-01 | Non-Functional Requirements Catalog | Planned |
-| SEC-01 | Security Architecture and Threat Model | Planned |
-| DAT-01 | Data Architecture | Planned |
-| API-01 | API and Integration Architecture | Planned |
-| INF-01 | Infrastructure and Deployment Architecture | Planned |
-| DEP-01 | External Dependency and Provider Matrix | Planned |
-| UX-01 | UX/UI and Visual Identity Specification | Planned |
-| A11Y-01 | Accessibility Specification | Planned |
-| OPS-01 | Observability, Operations and Recovery Specification | Planned |
-| PRIV-01 | Privacy/LGPD Specification | Planned/conditional on data scope |
-| ADR-INDEX | Architecture Decision Record Index | Planned |
-| RISK-01 | Product Risk Register | Planned |
-| ROAD-01 | Product Documentation/Release Roadmap | Planned |
-| READY-01 | Development Readiness Report | Planned; final freeze gate |
+The former Documentation Freeze was explicitly released by the project owner. V1.0 engineering Waves 0–5 and release hardening are complete. This index is now the canonical map of V1.0 documentation.
 
 ## Authority order
 
-When documents conflict, use this precedence until explicitly changed:
-
 1. explicit owner decision;
-2. Documentation Freeze gate and `PROJECT_STATUS.md`;
-3. this documentation index;
+2. `docs/PROJECT_STATUS.md`;
+3. this index;
 4. approved ADRs;
-5. product requirements and NFRs;
-6. architecture books and dependency maps;
-7. migration/test specifications;
-8. historical conversation notes.
+5. product requirements/NFRs;
+6. architecture/API/security/provider/operations specifications;
+7. migration/testing specifications;
+8. historical audit/conversation material.
 
-## Change control during freeze
+## Master documentation
 
-Documentation changes are allowed when they:
+| ID | Document | Status |
+|---|---|---|
+| BOOK-01 | `docs/MAPS_PLATFORM_BOOK.md` | Approved V1.0 |
+| GOV-01 | `docs/DOCUMENTATION_INDEX.md` | Approved V1.0 |
+| GOV-02 | `docs/PROJECT_STATUS.md` | Approved release status |
+| GOV-HIST | `docs/HGK_DOCUMENTATION_FREEZE_AUDIT.md` | Historical audit |
 
-- resolve contradictions;
-- add missing requirements or architecture;
-- improve traceability;
-- update risks or decisions;
-- consolidate approved visual identity;
-- clarify roadmap/gates.
+## Product
 
-They must not be used as a pretext to introduce product implementation.
+| ID | Document | Status |
+|---|---|---|
+| PRD-01 | `docs/product/MAPS_PLATFORM_PRD.md` | Approved V1 baseline |
+| REQ-01 | `docs/product/FUNCTIONAL_REQUIREMENTS.md` | Approved V1.0 |
+| NFR-01 | `docs/product/NON_FUNCTIONAL_REQUIREMENTS.md` | Approved V1.0 |
+| RISK-01 | `docs/product/RISK_REGISTER.md` | Approved V1.0 |
+| ROAD-01 | `docs/product/V1_ROADMAP.md` | Approved V1.0/post-V1 |
+
+## Architecture
+
+| ID | Document | Status |
+|---|---|---|
+| ARC-01 | `docs/architecture/HGK_ARCHITECTURE_BOOK.md` | Approved |
+| ARC-02 | `docs/architecture/HGK_COMPONENT_INVENTORY.md` | Approved |
+| ARC-03 | `docs/architecture/HGK_PUBLIC_API_INVENTORY.md` | Approved |
+| ARC-04 | `docs/architecture/HGK_DEPENDENCY_MAP.md` | Approved |
+| ARC-05 | `docs/architecture/HGK_MIGRATION_PLAN.md` | Executed Waves 0–5 |
+| DAT-01 | `docs/architecture/DATA_ARCHITECTURE.md` | Approved V1.0 |
+| INF-01 | `docs/architecture/INFRASTRUCTURE_DEPLOYMENT_ARCHITECTURE.md` | Approved source/deployment baseline |
+
+## API & integration
+
+| ID | Document | Status |
+|---|---|---|
+| API-01 | `docs/api/API_INTEGRATION_ARCHITECTURE.md` | Approved V1.0 |
+| API-HGK | `docs/api/HGK_API.md` | Approved |
+| API-COMP | `docs/api/MAPS_CORE_WAVE4_API_REVIEW.md` | Passed |
+| GUIDE-MIG | `docs/guides/HGK_MIGRATION_GUIDE.md` | Approved |
+| GUIDE-INSTALL | `docs/guides/INSTALLATION_DEVELOPMENT.md` | Approved V1.0 |
+
+## Security, privacy & quality
+
+| ID | Document | Status |
+|---|---|---|
+| SEC-BASE | `docs/security/SECURITY_PRIVACY_BOUNDARIES.md` | Approved |
+| SEC-01 | `docs/security/THREAT_MODEL.md` | Approved V1.0 |
+| PRIV-01 | `docs/security/PRIVACY_LGPD.md` | Approved V1.0 |
+| DTS-01 | `docs/testing/HGK_CHARACTERIZATION_TEST_SPEC.md` | Implemented/validated |
+| DTS-02 | `docs/testing/HGK_API_COMPATIBILITY_SPEC.md` | Implemented/validated |
+| DTS-03 | `docs/testing/HGK_NUMERICAL_VALIDATION.md` | Implemented/validated |
+| DTS-04 | `docs/testing/HGK_OFFICIAL_TEST_DATASET.md` | Approved baseline |
+| DTS-05 | `docs/testing/HGK_CI_TEST_MATRIX.md` | Implemented by repository workflows |
+
+## Provider, UX & operations
+
+| ID | Document | Status |
+|---|---|---|
+| DEP-01 | `docs/providers/EXTERNAL_DEPENDENCY_MATRIX.md` | Approved V1.0 |
+| MAPLIBRE-01 | `docs/providers/MAPLIBRE_V1_MATRIX.md` | Approved V1.0 |
+| UX-01 | `docs/ux/VISUAL_IDENTITY_UX_UI.md` | Official identity baseline |
+| A11Y-01 | `docs/ux/ACCESSIBILITY.md` | Approved V1.0 |
+| OPS-01 | `docs/operations/OBSERVABILITY_OPERATIONS_RECOVERY.md` | Approved V1.0 |
+
+## Architecture decisions
+
+| ID | Document | Status |
+|---|---|---|
+| ADR-INDEX | `docs/adr/ADR_INDEX.md` | Approved V1.0 |
+| ADR-001 | `docs/architecture/ADR-001-GEOMETRY_FACTORY_POINT.md` | Accepted |
+| ADR-002 | `docs/architecture/ADR-002-CENTROID-ACCUMULATOR-TYPING.md` | Accepted |
+| ADR-003 | `docs/adr/ADR-003-centroid-semantics.md` | Accepted |
+
+## Release
+
+| ID | Document | Status |
+|---|---|---|
+| READY-01 | `docs/release/V1_DEVELOPMENT_READINESS.md` | READY |
+| REL-CHK | `docs/release/V1_RELEASE_CHECKLIST.md` | Source release ready; merge/tag verification pending |
+| REL-NOTES | `docs/release/V1_0_0_RELEASE_NOTES.md` | Prepared |
+| CHANGELOG | `CHANGELOG.md` | V1.0 recorded |
+
+## Documentation completion gate
+
+The V1.0 documentation set is complete for the source/engineering release. No missing document blocks merge or publication. Production hosting, commercial tile/style selection and consumer-specific rollout documentation become required only when a concrete production deployment is authorized.
