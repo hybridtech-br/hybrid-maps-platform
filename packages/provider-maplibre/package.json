@@ -18,7 +18,7 @@
   "dependencies": {
     "@hybrid/maps-core": "workspace:*",
     "@hybrid/maps-provider-sdk": "workspace:*",
-    "maplibre-gl": "^5.1.0"
+    "maplibre-gl": "^6.4.0"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.16",
