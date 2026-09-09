@@ -12,7 +12,7 @@
     "@hybrid/maps-core": "workspace:*",
     "@hybrid/maps-provider-maplibre": "workspace:*",
     "@hybrid/maps-provider-sdk": "workspace:*",
-    "maplibre-gl": "^5.1.0"
+    "maplibre-gl": "^6.7.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2",
